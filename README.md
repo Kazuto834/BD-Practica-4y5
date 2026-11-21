@@ -123,3 +123,8 @@ El sistema web de gestión logística del Centro de Distribución **"El Pistón"
    1. Abra [`entorno/compose.yaml`](entorno/compose.yaml) y ubique la sección `ports` dentro del servicio `postgres`.
    2. Cambie únicamente el puerto externo (el número a la izquierda de los dos puntos) por otro disponible en su equipo, por ejemplo de `"5433:5432"` a `"5434:5432"` (conserve intacto el `5432` interno y la variable `DATABASE_URL` de la API).
    3. Aplique el cambio ejecutando `docker compose up -d` dentro de [`entorno/`](entorno/) e ingrese ese mismo puerto nuevo (`5434`) en **pgAdmin 4**.
+
+### Ejecución en Modo Estático (GitHub Pages)
+
+* **Aplicación desplegada en vivo (Modo Estático):** [https://kazuto834.github.io/BD-Practica-4y5/](https://kazuto834.github.io/BD-Practica-4y5/)
+* **Comportamiento:** Esta versión corresponde a la aplicación web ejecutándose de forma 100 % estática en **GitHub Pages** (sin conexión activa a PostgreSQL ni peticiones a servidores externos). [`db-client.js`](app-almacen/js/db-client.js) carga automáticamente los datos iniciales desde [`mock-data.js`](app-almacen/js/mock-data.js) y conserva las altas, movimientos de inventario, órdenes y reportes PDF en la memoria temporal de la pestaña (`sessionStorage`) hasta que esta se cierre.
