@@ -20,6 +20,10 @@ function setupTabs() {
 
 function renderInventario(lista) {
   const tbody = document.getElementById("tabla-inventario");
+  if (lista.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="6">Sin registros en inventario</td></tr>`;
+    return;
+  }
   tbody.innerHTML = lista
     .map(
       (i) => `
@@ -33,6 +37,22 @@ function renderInventario(lista) {
       </tr>`
     )
     .join("");
+}
+
+function aplicarFiltroInventario() {
+  const input = document.getElementById("buscar-inventario");
+  const q = (input ? input.value : "").toLowerCase().trim();
+  if (!q) {
+    renderInventario(cacheInventario);
+    return;
+  }
+  const filtrados = cacheInventario.filter(
+    (i) =>
+      i.sku.toLowerCase().includes(q) ||
+      i.producto.toLowerCase().includes(q) ||
+      `${i.zona}-${i.pasillo}-${i.rack}-${i.nivel}`.toLowerCase().includes(q)
+  );
+  renderInventario(filtrados);
 }
 
 function renderProductos(productos) {
@@ -81,18 +101,21 @@ function renderOrdenes(ordenes) {
 }
 
 function renderReportes(reportes) {
-  document.getElementById("rep-stock").innerHTML = reportes.stock_por_ubicacion
-    .map(
-      (r) => `
-      <tr>
-        <td>${r.zona}-${r.pasillo}-${r.rack}-${r.nivel}</td>
-        <td>${r.sku}</td>
-        <td>${r.nombre}</td>
-        <td>${r.cantidad}</td>
-        <td>${r.peso_total_kg} / ${r.capacidad_peso_kg} kg</td>
-      </tr>`
-    )
-    .join("");
+  document.getElementById("rep-stock").innerHTML =
+    reportes.stock_por_ubicacion.length === 0
+      ? `<tr><td colspan="5">Sin stock registrado</td></tr>`
+      : reportes.stock_por_ubicacion
+          .map(
+            (r) => `
+            <tr>
+              <td>${r.zona}-${r.pasillo}-${r.rack}-${r.nivel}</td>
+              <td>${r.sku}</td>
+              <td>${r.nombre}</td>
+              <td>${r.cantidad}</td>
+              <td>${r.peso_total_kg} / ${r.capacidad_peso_kg} kg</td>
+            </tr>`
+          )
+          .join("");
 
   document.getElementById("rep-eficiencia").innerHTML = reportes.eficiencia_recoleccion
     .map(
@@ -148,7 +171,11 @@ async function cargarTodo() {
     .map((e) => `<option value="${e.id_empleado}">${e.nombre} (${e.turno})</option>`)
     .join("");
 
-  renderInventario(inventario);
+  // Sugerir siguiente ID de orden disponible
+  const maxOrden = ordenes.reduce((max, o) => Math.max(max, Number(o.id_orden)), 5000);
+  document.getElementById("ord-id").value = maxOrden + 1;
+
+  aplicarFiltroInventario();
   renderProductos(productos);
   renderOrdenes(ordenes);
   renderReportes(reportes);
@@ -156,8 +183,8 @@ async function cargarTodo() {
 
 window.completarOrdenUI = async (idOrden) => {
   try {
-    await window.dbClient.completarOrden(idOrden);
-    showAlert(`Orden #${idOrden} marcada como Completada.`);
+    const res = await window.dbClient.completarOrden(idOrden);
+    showAlert(res?.message || `Orden #${idOrden} marcada como Completada.`);
     await cargarTodo();
   } catch (err) {
     showAlert(err.message);
@@ -170,16 +197,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   await cargarTodo();
 
   // Filtro rápido en inventario
-  document.getElementById("buscar-inventario").addEventListener("input", (e) => {
-    const q = e.target.value.toLowerCase();
-    const filtrados = cacheInventario.filter(
-      (i) =>
-        i.sku.toLowerCase().includes(q) ||
-        i.producto.toLowerCase().includes(q) ||
-        `${i.zona}-${i.pasillo}-${i.rack}-${i.nivel}`.toLowerCase().includes(q)
-    );
-    renderInventario(filtrados);
-  });
+  document.getElementById("buscar-inventario").addEventListener("input", aplicarFiltroInventario);
 
   // Cambio de subtipo en formulario de producto
   document.getElementById("prod-subtipo").addEventListener("change", (e) => {
@@ -193,12 +211,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     e.preventDefault();
     try {
       const tipo = document.getElementById("mov-tipo").value;
-      await window.dbClient.registrarMovimiento(tipo, {
+      const res = await window.dbClient.registrarMovimiento(tipo, {
         sku: document.getElementById("mov-sku").value,
         id_ubicacion: Number(document.getElementById("mov-ubicacion").value),
         cantidad: Number(document.getElementById("mov-cantidad").value),
       });
-      showAlert(`Movimiento de ${tipo} registrado en PostgreSQL.`);
+      showAlert(res?.message || `Movimiento de ${tipo} registrado.`);
       await cargarTodo();
     } catch (err) {
       showAlert(err.message);
@@ -225,8 +243,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         nivel_inflamabilidad: Number(document.getElementById("prod-inflamabilidad").value),
         requiere_refrigeracion: document.getElementById("prod-refrigeracion").checked,
       });
-      showAlert(res.message);
+      showAlert(res?.message || "Producto registrado.");
       e.target.reset();
+      document.getElementById("campos-solida").classList.remove("hidden");
+      document.getElementById("campos-fluido").classList.add("hidden");
       await cargarTodo();
     } catch (err) {
       showAlert(err.message);
@@ -237,13 +257,13 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("form-orden").addEventListener("submit", async (e) => {
     e.preventDefault();
     try {
-      await window.dbClient.crearOrden({
+      const res = await window.dbClient.crearOrden({
         id_orden: Number(document.getElementById("ord-id").value),
         id_empleado: Number(document.getElementById("ord-empleado").value),
         sku: document.getElementById("ord-sku").value,
         cantidad_pedida: Number(document.getElementById("ord-cantidad").value),
       });
-      showAlert("Orden de salida asignada correctamente.");
+      showAlert(res?.message || "Orden de salida asignada correctamente.");
       await cargarTodo();
     } catch (err) {
       showAlert(err.message);
