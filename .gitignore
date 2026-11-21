@@ -24,3 +24,10 @@ desktop.ini
 *.tmp
 *.bak
 *~
+
+# ARCHIVOS PARA FUNCIONAMIENTO ONLINE
+.env
+entorno/.env
+entorno/data/
+__pycache__/
+*.pyc

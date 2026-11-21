@@ -1,9 +1,13 @@
 class DBClient {
   constructor() {
-    const host = window.location.hostname || "localhost";
-    this.apiBase = `http://${host}:8000/api`;
+    this.apiBase = "/api";
     this.isPostgres = false;
     this.storageKey = "piston_static_db_v1";
+    this.tokenKey = "piston_session_token_v1";
+    this.userEmail = null;
+    this.userRole = null;
+    this.idEmpleado = null;
+    this.userName = null;
   }
 
   async init() {
@@ -27,12 +31,160 @@ class DBClient {
       this.isPostgres = false;
     }
 
-    if (!this.isPostgres) {
+    if (this.isPostgres) {
+      await this.verificarSesion();
+    } else {
       this._initStaticState();
     }
 
     this.renderBadge();
     return this.isPostgres;
+  }
+
+  getToken() {
+    return sessionStorage.getItem(this.tokenKey);
+  }
+
+  isAuthenticated() {
+    return Boolean(this.isPostgres && this.userEmail && this.userRole && this.getToken());
+  }
+
+  isAdmin() {
+    return this.isAuthenticated() && this.userRole === "admin";
+  }
+
+  async verificarSesion() {
+    const token = this.getToken();
+    if (!token || !this.isPostgres) {
+      this.logout();
+      return false;
+    }
+    try {
+      const res = await fetch(`${this.apiBase}/auth/verify`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) {
+        this.logout();
+        return false;
+      }
+      const data = await res.json();
+      this.userEmail = data.email;
+      this.userRole = data.role;
+      this.idEmpleado = data.id_empleado ?? null;
+      this.userName = data.nombre || data.email;
+      return true;
+    } catch {
+      this.logout();
+      return false;
+    }
+  }
+
+  async login(email, password) {
+    if (!this.isPostgres) {
+      throw new Error("El inicio de sesión requiere que el servidor Docker esté activo.");
+    }
+    const res = await fetch(`${this.apiBase}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.detail || "Credenciales incorrectas.");
+    }
+    sessionStorage.setItem(this.tokenKey, data.token);
+    this.userEmail = data.email;
+    this.userRole = data.role;
+    this.idEmpleado = data.id_empleado ?? null;
+    this.userName = data.nombre || data.email;
+    this.renderBadge();
+    return data;
+  }
+
+  logout() {
+    sessionStorage.removeItem(this.tokenKey);
+    this.userEmail = null;
+    this.userRole = null;
+    this.idEmpleado = null;
+    this.userName = null;
+    this.renderBadge();
+  }
+
+  async _authFetch(url, options = {}) {
+    const token = this.getToken();
+    if (!token) {
+      throw new Error("Sesión requerida para consultar o modificar la base de datos.");
+    }
+    const headers = {
+      ...(options.headers || {}),
+      Authorization: `Bearer ${token}`,
+    };
+    const res = await fetch(url, { ...options, headers });
+    if (res.status === 401) {
+      this.logout();
+      throw new Error("Sesión expirada o no autorizada. Inicia sesión nuevamente.");
+    }
+    return res;
+  }
+
+  async crearEmpleado(payload) {
+    if (!this.isAdmin()) {
+      throw new Error("Acceso denegado: se requiere cuenta de Administrador.");
+    }
+    const res = await this._authFetch(`${this.apiBase}/empleados`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.detail || "No autorizado para registrar trabajadores.");
+    }
+    return data;
+  }
+
+  async guardarCredencialesEmpleado(idEmpleado, payload) {
+    if (!this.isAdmin()) {
+      throw new Error("Acceso denegado: se requiere cuenta de Administrador.");
+    }
+    const res = await this._authFetch(`${this.apiBase}/empleados/${idEmpleado}/credenciales`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.detail || "No se pudieron actualizar las credenciales.");
+    }
+    return data;
+  }
+
+  async cambiarMiPassword(passwordActual, passwordNueva) {
+    const res = await this._authFetch(`${this.apiBase}/auth/cambiar-password`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        password_actual: passwordActual,
+        password_nueva: passwordNueva,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.detail || "No se pudo cambiar la contraseña.");
+    }
+    return data;
+  }
+
+  async getReportesCertificadosPDF() {
+    if (!this.isAdmin()) {
+      throw new Error("La descarga de reportes PDF requiere sesión de Administrador.");
+    }
+    const res = await this._authFetch(`${this.apiBase}/reportes/pdf-data`);
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.detail || "No autorizado para exportar reportes PDF.");
+    }
+    return data;
   }
 
   _initStaticState() {
@@ -54,7 +206,13 @@ class DBClient {
     const badge = document.getElementById("db-status-badge");
     if (!badge) return;
     if (this.isPostgres) {
-      badge.textContent = "🟢 Conectado a PostgreSQL (Docker Local)";
+      if (!this.isAuthenticated()) {
+        badge.textContent = "🟢 PostgreSQL en Vivo (Bloqueado)";
+      } else if (this.userRole === "admin") {
+        badge.textContent = "🟢 PostgreSQL — Administrador";
+      } else {
+        badge.textContent = `🟢 PostgreSQL — ${this.userName}`;
+      }
       badge.className = "status-badge status-live";
     } else {
       badge.textContent = "🟡 Modo Estático (Sesión Temporal en Pestaña)";
@@ -64,7 +222,7 @@ class DBClient {
 
   async getCatalogos() {
     if (!this.isPostgres) return this._getStaticDB().catalogos;
-    const res = await fetch(`${this.apiBase}/catalogos`);
+    const res = await this._authFetch(`${this.apiBase}/catalogos`);
     return res.json();
   }
 
@@ -78,7 +236,7 @@ class DBClient {
         return { ...p, stock_total: stockTotal };
       });
     }
-    const res = await fetch(`${this.apiBase}/productos`);
+    const res = await this._authFetch(`${this.apiBase}/productos`);
     return res.json();
   }
 
@@ -109,7 +267,7 @@ class DBClient {
       return { message: "Producto guardado en sesión estática (vigente hasta cerrar la pestaña)." };
     }
 
-    const res = await fetch(`${this.apiBase}/productos`, {
+    const res = await this._authFetch(`${this.apiBase}/productos`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data),
@@ -120,7 +278,7 @@ class DBClient {
 
   async getInventario() {
     if (!this.isPostgres) return this._getStaticDB().inventario;
-    const res = await fetch(`${this.apiBase}/inventario`);
+    const res = await this._authFetch(`${this.apiBase}/inventario`);
     return res.json();
   }
 
@@ -177,7 +335,7 @@ class DBClient {
       }
     }
 
-    const res = await fetch(`${this.apiBase}/inventario/${tipo}`, {
+    const res = await this._authFetch(`${this.apiBase}/inventario/${tipo}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -188,7 +346,7 @@ class DBClient {
 
   async getOrdenes() {
     if (!this.isPostgres) return this._getStaticDB().ordenes;
-    const res = await fetch(`${this.apiBase}/ordenes`);
+    const res = await this._authFetch(`${this.apiBase}/ordenes`);
     return res.json();
   }
 
@@ -214,7 +372,7 @@ class DBClient {
       return { message: "Orden asignada en sesión estática." };
     }
 
-    const res = await fetch(`${this.apiBase}/ordenes`, {
+    const res = await this._authFetch(`${this.apiBase}/ordenes`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
@@ -233,7 +391,7 @@ class DBClient {
       return { message: "Orden completada en sesión estática." };
     }
 
-    const res = await fetch(`${this.apiBase}/ordenes/${idOrden}/completar`, {
+    const res = await this._authFetch(`${this.apiBase}/ordenes/${idOrden}/completar`, {
       method: "PATCH",
     });
     if (!res.ok) throw new Error("Error al completar orden");
@@ -244,7 +402,6 @@ class DBClient {
     if (!this.isPostgres) {
       const db = this._getStaticDB();
 
-      // 1. Stock por ubicación recalculado dinámicamente
       const stock_por_ubicacion = db.inventario.map((i) => {
         const prod = db.productos.find((p) => p.sku === i.sku);
         const pesoUnit = prod ? Number(prod.peso_kg) : 0;
@@ -261,7 +418,6 @@ class DBClient {
         };
       });
 
-      // 2. Eficiencia de recolección recalculada dinámicamente
       const eficiencia_recoleccion = db.catalogos.empleados
         .map((e) => {
           const asignadas = db.ordenes.filter((o) => Number(o.id_empleado) === Number(e.id_empleado));
@@ -276,7 +432,6 @@ class DBClient {
         })
         .sort((a, b) => b.ordenes_completadas - a.ordenes_completadas);
 
-      // 3. Ubicaciones vacías recalculadas dinámicamente
       const ocupadasIds = new Set(db.inventario.map((i) => Number(i.id_ubicacion)));
       const ubicaciones_vacias = db.catalogos.ubicaciones.filter(
         (u) => !ocupadasIds.has(Number(u.id_ubicacion))
@@ -289,7 +444,7 @@ class DBClient {
       };
     }
 
-    const res = await fetch(`${this.apiBase}/reportes`);
+    const res = await this._authFetch(`${this.apiBase}/reportes`);
     return res.json();
   }
 }

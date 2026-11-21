@@ -13,9 +13,10 @@
 ---
 
 ## Proyectos de Trabajo
-* **Proyecto Propio:** Sistema de Gestión de Almacén y Centro de Distribución Automotriz **"El Pistón"** (Motor: PostgreSQL 16).
-* **Proyecto Asignado:** **Obra pública municipal** (*Federally Funded Public Works in Mexico: A Measured Lakehouse Layer*).
-  * Repositorio / Fork local: [`Fork-PublicMunicipalWorks_IJCOPI`](../Fork-PublicMunicipalWorks_IJCOPI)
+* **Proyecto Propio:** Sistema de Gestión de Almacén y Centro de Distribución Automotriz **"El Pistón"**
+* **Nota sobre el desarrollo y verificación de la aplicación:** La aplicación contenida en este repositorio ha alcanzado un estado de funcionamiento con el apoyo de agentes de inteligencia artificial. Como parte del flujo de trabajo, se procuró revisar y comprender el código generado para identificar las acciones realizadas por dichos agentes, y se comprobó el funcionamiento del sistema antes de realizar la carga definitiva al repositorio.
+* **Proyecto Asignado:** **Obra pública municipal** 
+  * Repositorio / Fork: [`Fork-PublicMunicipalWorks_IJCOPI`](https://github.com/Kazuto834/Fork-PublicMunicipalWorks_IJCOPI)
 
 ---
 
