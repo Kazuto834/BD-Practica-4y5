@@ -1,4 +1,9 @@
 let cacheInventario = [];
+let cacheReportes = {
+  stock_por_ubicacion: [],
+  eficiencia_recoleccion: [],
+  ubicaciones_vacias: [],
+};
 
 function showAlert(msg) {
   const box = document.getElementById("alert-box");
@@ -101,6 +106,8 @@ function renderOrdenes(ordenes) {
 }
 
 function renderReportes(reportes) {
+  cacheReportes = reportes;
+
   document.getElementById("rep-stock").innerHTML =
     reportes.stock_por_ubicacion.length === 0
       ? `<tr><td colspan="5">Sin stock registrado</td></tr>`
@@ -141,6 +148,129 @@ function renderReportes(reportes) {
             </tr>`
           )
           .join("");
+}
+
+function descargarReportesPDF() {
+  if (!window.jspdf || !window.jspdf.jsPDF) {
+    window.print();
+    return;
+  }
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "letter" });
+  const fechaStr = new Date().toLocaleString("es-MX");
+  const origenDatos = window.dbClient.isPostgres
+    ? "Base de Datos PostgreSQL 16 (Entorno Local Docker)"
+    : "Modo Estático (Sesión Temporal en Navegador)";
+
+  // Encabezado institucional
+  doc.setFillColor(15, 23, 42);
+  doc.rect(0, 0, 216, 28, "F");
+  doc.setTextColor(56, 189, 248);
+  doc.setFontSize(16);
+  doc.setFont("helvetica", "bold");
+  doc.text("Almacenes El Pistón — Reportes Gerenciales", 14, 12);
+
+  doc.setTextColor(226, 232, 240);
+  doc.setFontSize(9);
+  doc.setFont("helvetica", "normal");
+  doc.text(`Generado: ${fechaStr}`, 14, 19);
+  doc.text(`Fuente: ${origenDatos}`, 14, 24);
+
+  let yPos = 36;
+
+  // 1. Stock por Ubicación
+  doc.setTextColor(15, 23, 42);
+  doc.setFontSize(12);
+  doc.setFont("helvetica", "bold");
+  doc.text("1. Stock y Carga por Ubicación", 14, yPos);
+
+  const filasStock =
+    cacheReportes.stock_por_ubicacion.length > 0
+      ? cacheReportes.stock_por_ubicacion.map((r) => [
+          `${r.zona}-${r.pasillo}-${r.rack}-${r.nivel}`,
+          r.sku,
+          r.nombre,
+          String(r.cantidad),
+          `${r.peso_total_kg} / ${r.capacidad_peso_kg} kg`,
+        ])
+      : [["—", "—", "Sin stock registrado", "0", "0 kg"]];
+
+  doc.autoTable({
+    startY: yPos + 3,
+    head: [["Ubicación", "SKU", "Producto", "Cantidad", "Peso Actual / Máx"]],
+    body: filasStock,
+    theme: "grid",
+    headStyles: { fillColor: [30, 41, 59], textColor: [255, 255, 255], fontSize: 9 },
+    bodyStyles: { fontSize: 8.5, textColor: [30, 41, 59] },
+    margin: { left: 14, right: 14 },
+  });
+
+  yPos = doc.lastAutoTable.finalY + 10;
+
+  // 2. Eficiencia de Recolección
+  doc.setFontSize(12);
+  doc.setFont("helvetica", "bold");
+  doc.text("2. Eficiencia de Recolección por Empleado", 14, yPos);
+
+  const filasEficiencia = cacheReportes.eficiencia_recoleccion.map((e) => [
+    e.nombre,
+    e.turno,
+    `${e.ordenes_completadas} / ${e.ordenes_asignadas}`,
+  ]);
+
+  doc.autoTable({
+    startY: yPos + 3,
+    head: [["Empleado", "Turno", "Órdenes Completadas / Asignadas"]],
+    body: filasEficiencia,
+    theme: "grid",
+    headStyles: { fillColor: [30, 41, 59], textColor: [255, 255, 255], fontSize: 9 },
+    bodyStyles: { fontSize: 8.5, textColor: [30, 41, 59] },
+    margin: { left: 14, right: 14 },
+  });
+
+  yPos = doc.lastAutoTable.finalY + 10;
+
+  // 3. Ubicaciones Vacías
+  doc.setFontSize(12);
+  doc.setFont("helvetica", "bold");
+  doc.text("3. Ubicaciones Vacías Disponibles", 14, yPos);
+
+  const filasVacias =
+    cacheReportes.ubicaciones_vacias.length > 0
+      ? cacheReportes.ubicaciones_vacias.map((u) => [
+          `${u.zona}-${u.pasillo}-${u.rack}-${u.nivel}`,
+          u.tipo_almacenaje,
+          `${u.capacidad_peso_kg} kg`,
+        ])
+      : [["—", "Sin ubicaciones vacías disponibles", "—"]];
+
+  doc.autoTable({
+    startY: yPos + 3,
+    head: [["Coordenada", "Tipo de Almacenaje", "Capacidad Máxima"]],
+    body: filasVacias,
+    theme: "grid",
+    headStyles: { fillColor: [30, 41, 59], textColor: [255, 255, 255], fontSize: 9 },
+    bodyStyles: { fontSize: 8.5, textColor: [30, 41, 59] },
+    margin: { left: 14, right: 14 },
+  });
+
+  // Pie de página con número de página
+  const totalPages = doc.internal.getNumberOfPages();
+  for (let i = 1; i <= totalPages; i++) {
+    doc.setPage(i);
+    doc.setFontSize(8);
+    doc.setTextColor(100, 116, 139);
+    doc.text(
+      `Almacenes El Pistón — Sistema de Gestión Logística | Página ${i} de ${totalPages}`,
+      14,
+      270
+    );
+  }
+
+  const fechaArchivo = new Date().toISOString().slice(0, 10);
+  doc.save(`Reporte_Almacen_El_Piston_${fechaArchivo}.pdf`);
+  showAlert("Reporte gerencial descargado en formato PDF.");
 }
 
 async function cargarTodo() {
@@ -195,6 +325,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   setupTabs();
   await window.dbClient.init();
   await cargarTodo();
+
+  // Botón descarga PDF
+  document.getElementById("btn-descargar-pdf").addEventListener("click", descargarReportesPDF);
 
   // Filtro rápido en inventario
   document.getElementById("buscar-inventario").addEventListener("input", aplicarFiltroInventario);

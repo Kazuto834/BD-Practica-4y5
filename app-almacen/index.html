@@ -168,6 +168,20 @@
     <!-- TAB 4: REPORTES GERENCIALES -->
     <section id="tab-reportes" class="tab-panel">
       <div class="card">
+        <div class="card-header">
+          <div>
+            <h2>Reportes Operativos y Gerenciales</h2>
+            <span style="color: var(--muted); font-size: 0.85rem;">
+              Exporta el estado actual (Stock por Ubicación, Eficiencia de Recolección y Ubicaciones Vacías)
+            </span>
+          </div>
+          <button type="button" id="btn-descargar-pdf" class="btn-primary">
+            Descargar Reportes en PDF
+          </button>
+        </div>
+      </div>
+
+      <div class="card">
         <h2>1. Reporte de Stock y Carga por Ubicación</h2>
         <div class="table-wrap">
           <table>
@@ -220,6 +234,10 @@
       </div>
     </section>
   </main>
+
+  <!-- Librerías para generación de PDF en navegador (Local y GitHub Pages) -->
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
 
   <script src="js/mock-data.js"></script>
   <script src="js/db-client.js"></script>
