@@ -1,0 +1,252 @@
+let cacheInventario = [];
+
+function showAlert(msg) {
+  const box = document.getElementById("alert-box");
+  box.textContent = msg;
+  box.classList.remove("hidden");
+  setTimeout(() => box.classList.add("hidden"), 4500);
+}
+
+function setupTabs() {
+  document.querySelectorAll(".tab-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".tab-btn").forEach((b) => b.classList.remove("active"));
+      document.querySelectorAll(".tab-panel").forEach((p) => p.classList.remove("active"));
+      btn.classList.add("active");
+      document.getElementById(`tab-${btn.dataset.tab}`).classList.add("active");
+    });
+  });
+}
+
+function renderInventario(lista) {
+  const tbody = document.getElementById("tabla-inventario");
+  tbody.innerHTML = lista
+    .map(
+      (i) => `
+      <tr>
+        <td><strong>${i.zona}-${i.pasillo}-${i.rack}-${i.nivel}</strong></td>
+        <td>${i.tipo_almacenaje}</td>
+        <td>${i.sku}</td>
+        <td>${i.producto}</td>
+        <td><strong>${i.cantidad}</strong></td>
+        <td>${i.fecha_ingreso}</td>
+      </tr>`
+    )
+    .join("");
+}
+
+function renderProductos(productos) {
+  const tbody = document.getElementById("tabla-productos");
+  tbody.innerHTML = productos
+    .map((p) => {
+      const spec =
+        p.volumen_mililitros != null
+          ? `Fluido: ${p.volumen_mililitros} ml | Inflam. ${p.nivel_inflamabilidad}`
+          : `Sólida: ${p.material_fabricacion || "Estándar"} ${p.fragil ? "(Frágil)" : ""}`;
+      return `
+        <tr>
+          <td><strong>${p.sku}</strong></td>
+          <td>${p.nombre}</td>
+          <td>${p.categoria}</td>
+          <td>${p.largo_cm} × ${p.ancho_cm} × ${p.alto_cm}</td>
+          <td>${p.peso_kg} kg</td>
+          <td>${spec}</td>
+          <td><strong>${p.stock_total}</strong></td>
+        </tr>`;
+    })
+    .join("");
+}
+
+function renderOrdenes(ordenes) {
+  const tbody = document.getElementById("tabla-ordenes");
+  tbody.innerHTML = ordenes
+    .map(
+      (o) => `
+      <tr>
+        <td>#${o.id_orden}</td>
+        <td>${new Date(o.fecha_emision).toLocaleString("es-MX")}</td>
+        <td>${o.empleado} (${o.turno})</td>
+        <td>${o.resumen_productos || "-"}</td>
+        <td><strong>${o.estatus}</strong></td>
+        <td>
+          ${
+            o.estatus !== "Completada"
+              ? `<button class="btn-small" onclick="completarOrdenUI(${o.id_orden})">Completar</button>`
+              : "—"
+          }
+        </td>
+      </tr>`
+    )
+    .join("");
+}
+
+function renderReportes(reportes) {
+  document.getElementById("rep-stock").innerHTML = reportes.stock_por_ubicacion
+    .map(
+      (r) => `
+      <tr>
+        <td>${r.zona}-${r.pasillo}-${r.rack}-${r.nivel}</td>
+        <td>${r.sku}</td>
+        <td>${r.nombre}</td>
+        <td>${r.cantidad}</td>
+        <td>${r.peso_total_kg} / ${r.capacidad_peso_kg} kg</td>
+      </tr>`
+    )
+    .join("");
+
+  document.getElementById("rep-eficiencia").innerHTML = reportes.eficiencia_recoleccion
+    .map(
+      (e) => `
+      <tr>
+        <td>${e.nombre}</td>
+        <td>${e.turno}</td>
+        <td><strong>${e.ordenes_completadas}</strong> / ${e.ordenes_asignadas}</td>
+      </tr>`
+    )
+    .join("");
+
+  document.getElementById("rep-vacias").innerHTML =
+    reportes.ubicaciones_vacias.length === 0
+      ? `<tr><td colspan="3">Sin ubicaciones vacías</td></tr>`
+      : reportes.ubicaciones_vacias
+          .map(
+            (u) => `
+            <tr>
+              <td><strong>${u.zona}-${u.pasillo}-${u.rack}-${u.nivel}</strong></td>
+              <td>${u.tipo_almacenaje}</td>
+              <td>${u.capacidad_peso_kg} kg</td>
+            </tr>`
+          )
+          .join("");
+}
+
+async function cargarTodo() {
+  const [catalogos, productos, inventario, ordenes, reportes] = await Promise.all([
+    window.dbClient.getCatalogos(),
+    window.dbClient.getProductos(),
+    window.dbClient.getInventario(),
+    window.dbClient.getOrdenes(),
+    window.dbClient.getReportes(),
+  ]);
+
+  cacheInventario = inventario;
+
+  // Poblar selects
+  const skuOptions = productos.map((p) => `<option value="${p.sku}">${p.sku} — ${p.nombre}</option>`).join("");
+  document.getElementById("mov-sku").innerHTML = skuOptions;
+  document.getElementById("ord-sku").innerHTML = skuOptions;
+
+  document.getElementById("mov-ubicacion").innerHTML = catalogos.ubicaciones
+    .map((u) => `<option value="${u.id_ubicacion}">${u.zona}-${u.pasillo}-${u.rack}-${u.nivel} (${u.tipo_almacenaje})</option>`)
+    .join("");
+
+  document.getElementById("prod-categoria").innerHTML = catalogos.categorias
+    .map((c) => `<option value="${c.id_categoria}">${c.nombre}</option>`)
+    .join("");
+
+  document.getElementById("ord-empleado").innerHTML = catalogos.empleados
+    .map((e) => `<option value="${e.id_empleado}">${e.nombre} (${e.turno})</option>`)
+    .join("");
+
+  renderInventario(inventario);
+  renderProductos(productos);
+  renderOrdenes(ordenes);
+  renderReportes(reportes);
+}
+
+window.completarOrdenUI = async (idOrden) => {
+  try {
+    await window.dbClient.completarOrden(idOrden);
+    showAlert(`Orden #${idOrden} marcada como Completada.`);
+    await cargarTodo();
+  } catch (err) {
+    showAlert(err.message);
+  }
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
+  setupTabs();
+  await window.dbClient.init();
+  await cargarTodo();
+
+  // Filtro rápido en inventario
+  document.getElementById("buscar-inventario").addEventListener("input", (e) => {
+    const q = e.target.value.toLowerCase();
+    const filtrados = cacheInventario.filter(
+      (i) =>
+        i.sku.toLowerCase().includes(q) ||
+        i.producto.toLowerCase().includes(q) ||
+        `${i.zona}-${i.pasillo}-${i.rack}-${i.nivel}`.toLowerCase().includes(q)
+    );
+    renderInventario(filtrados);
+  });
+
+  // Cambio de subtipo en formulario de producto
+  document.getElementById("prod-subtipo").addEventListener("change", (e) => {
+    const esSolida = e.target.value === "solida";
+    document.getElementById("campos-solida").classList.toggle("hidden", !esSolida);
+    document.getElementById("campos-fluido").classList.toggle("hidden", esSolida);
+  });
+
+  // Submit movimiento inventario
+  document.getElementById("form-movimiento").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      const tipo = document.getElementById("mov-tipo").value;
+      await window.dbClient.registrarMovimiento(tipo, {
+        sku: document.getElementById("mov-sku").value,
+        id_ubicacion: Number(document.getElementById("mov-ubicacion").value),
+        cantidad: Number(document.getElementById("mov-cantidad").value),
+      });
+      showAlert(`Movimiento de ${tipo} registrado en PostgreSQL.`);
+      await cargarTodo();
+    } catch (err) {
+      showAlert(err.message);
+    }
+  });
+
+  // Submit nuevo producto
+  document.getElementById("form-producto").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      const tipo = document.getElementById("prod-subtipo").value;
+      const res = await window.dbClient.crearProducto({
+        sku: document.getElementById("prod-sku").value.trim(),
+        nombre: document.getElementById("prod-nombre").value.trim(),
+        id_categoria: Number(document.getElementById("prod-categoria").value),
+        largo_cm: Number(document.getElementById("prod-largo").value),
+        ancho_cm: Number(document.getElementById("prod-ancho").value),
+        alto_cm: Number(document.getElementById("prod-alto").value),
+        peso_kg: Number(document.getElementById("prod-peso").value),
+        tipo,
+        material_fabricacion: document.getElementById("prod-material").value.trim() || "Estándar",
+        fragil: document.getElementById("prod-fragil").checked,
+        volumen_mililitros: Number(document.getElementById("prod-volumen").value),
+        nivel_inflamabilidad: Number(document.getElementById("prod-inflamabilidad").value),
+        requiere_refrigeracion: document.getElementById("prod-refrigeracion").checked,
+      });
+      showAlert(res.message);
+      e.target.reset();
+      await cargarTodo();
+    } catch (err) {
+      showAlert(err.message);
+    }
+  });
+
+  // Submit nueva orden
+  document.getElementById("form-orden").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    try {
+      await window.dbClient.crearOrden({
+        id_orden: Number(document.getElementById("ord-id").value),
+        id_empleado: Number(document.getElementById("ord-empleado").value),
+        sku: document.getElementById("ord-sku").value,
+        cantidad_pedida: Number(document.getElementById("ord-cantidad").value),
+      });
+      showAlert("Orden de salida asignada correctamente.");
+      await cargarTodo();
+    } catch (err) {
+      showAlert(err.message);
+    }
+  });
+});

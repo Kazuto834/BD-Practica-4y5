@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Almacenes El Pistón — Gestión Logística</title>
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <h1>Almacenes El Pistón</h1>
+      <span>Centro de Distribución y Almacén Automotriz</span>
+    </div>
+    <span id="db-status-badge" class="status-badge">Detectando entorno...</span>
+  </header>
+
+  <nav class="tabs">
+    <button class="tab-btn active" data-tab="inventario">Inventario Físico</button>
+    <button class="tab-btn" data-tab="productos">Catálogo de Productos</button>
+    <button class="tab-btn" data-tab="ordenes">Órdenes de Salida</button>
+    <button class="tab-btn" data-tab="reportes">Reportes Gerenciales</button>
+  </nav>
+
+  <main class="container">
+    <div id="alert-box" class="alert hidden"></div>
+
+    <!-- TAB 1: INVENTARIO FÍSICO -->
+    <section id="tab-inventario" class="tab-panel active">
+      <div class="card">
+        <h2>Registrar Entrada / Salida de Mercancía</h2>
+        <form id="form-movimiento" class="grid-form">
+          <label>
+            Tipo de Operación
+            <select id="mov-tipo" required>
+              <option value="entrada">Entrada a Ubicación</option>
+              <option value="salida">Salida / Surtido de Ubicación</option>
+            </select>
+          </label>
+          <label>
+            Producto (SKU)
+            <select id="mov-sku" required></select>
+          </label>
+          <label>
+            Coordenada Física
+            <select id="mov-ubicacion" required></select>
+          </label>
+          <label>
+            Cantidad
+            <input type="number" id="mov-cantidad" min="1" value="1" required />
+          </label>
+          <button type="submit" class="btn-primary">Ejecutar Movimiento</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <h2>Stock en Tiempo Real por Coordenada</h2>
+          <input type="text" id="buscar-inventario" placeholder="Buscar por SKU, nombre o zona..." />
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Coordenada</th>
+                <th>Tipo Almacenaje</th>
+                <th>SKU</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Ingreso</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-inventario"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: CATÁLOGO DE PRODUCTOS -->
+    <section id="tab-productos" class="tab-panel">
+      <div class="card">
+        <h2>Alta de Producto (Supertipo y Subtipos)</h2>
+        <form id="form-producto" class="grid-form">
+          <label>SKU <input type="text" id="prod-sku" placeholder="SKU-5001" required /></label>
+          <label>Nombre <input type="text" id="prod-nombre" placeholder="Bomba de Agua" required /></label>
+          <label>Categoría <select id="prod-categoria" required></select></label>
+          <label>
+            Subtipo
+            <select id="prod-subtipo">
+              <option value="solida">Pieza Sólida</option>
+              <option value="fluido">Fluido Químico</option>
+            </select>
+          </label>
+          <label>Largo (cm) <input type="number" step="0.01" id="prod-largo" value="15" required /></label>
+          <label>Ancho (cm) <input type="number" step="0.01" id="prod-ancho" value="15" required /></label>
+          <label>Alto (cm) <input type="number" step="0.01" id="prod-alto" value="12" required /></label>
+          <label>Peso (kg) <input type="number" step="0.01" id="prod-peso" value="1.8" required /></label>
+
+          <div id="campos-solida" class="subtipo-fields">
+            <label>Material <input type="text" id="prod-material" placeholder="Aluminio / Acero" /></label>
+            <label class="checkbox-label"><input type="checkbox" id="prod-fragil" /> Pieza Frágil</label>
+          </div>
+
+          <div id="campos-fluido" class="subtipo-fields hidden">
+            <label>Volumen (ml) <input type="number" id="prod-volumen" value="1000" /></label>
+            <label>Inflamabilidad (1-4) <input type="number" min="0" max="4" id="prod-inflamabilidad" value="1" /></label>
+            <label class="checkbox-label"><input type="checkbox" id="prod-refrigeracion" /> Requiere Refrigeración</label>
+          </div>
+
+          <button type="submit" class="btn-primary">Guardar Producto</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Catálogo Registrado</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>SKU</th>
+                <th>Nombre</th>
+                <th>Categoría</th>
+                <th>Dimensiones (cm)</th>
+                <th>Peso</th>
+                <th>Especificación</th>
+                <th>Stock Total</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-productos"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 3: ÓRDENES DE SALIDA -->
+    <section id="tab-ordenes" class="tab-panel">
+      <div class="card">
+        <h2>Asignar Nueva Orden de Salida</h2>
+        <form id="form-orden" class="grid-form">
+          <label>ID Orden <input type="number" id="ord-id" value="5003" required /></label>
+          <label>Empleado Asignado <select id="ord-empleado" required></select></label>
+          <label>Producto (SKU) <select id="ord-sku" required></select></label>
+          <label>Cantidad Pedida <input type="number" id="ord-cantidad" min="1" value="2" required /></label>
+          <button type="submit" class="btn-primary">Asignar Orden</button>
+        </form>
+      </div>
+
+      <div class="card">
+        <h2>Despachos y Órdenes Activas</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID Orden</th>
+                <th>Fecha Emisión</th>
+                <th>Empleado (Turno)</th>
+                <th>Detalle</th>
+                <th>Estatus</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="tabla-ordenes"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: REPORTES GERENCIALES -->
+    <section id="tab-reportes" class="tab-panel">
+      <div class="card">
+        <h2>1. Reporte de Stock y Carga por Ubicación</h2>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Ubicación</th>
+                <th>SKU</th>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th>Peso Actual / Máx (kg)</th>
+              </tr>
+            </thead>
+            <tbody id="rep-stock"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <h2>2. Eficiencia de Recolección</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Empleado</th>
+                  <th>Turno</th>
+                  <th>Completadas / Asignadas</th>
+                </tr>
+              </thead>
+              <tbody id="rep-eficiencia"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>3. Ubicaciones Vacías Disponibles</h2>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Coordenada</th>
+                  <th>Tipo Almacenaje</th>
+                  <th>Capacidad (kg)</th>
+                </tr>
+              </thead>
+              <tbody id="rep-vacias"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/mock-data.js"></script>
+  <script src="js/db-client.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
