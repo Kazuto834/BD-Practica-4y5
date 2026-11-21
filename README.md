@@ -7,7 +7,7 @@
 * **Grupo:** 3CV2
 * **Integrantes:**
   * Garcia Castillo Mario — Boleta: 2025630545
-  * Gonzáles Martínez Danaet Montserrath — Boleta: 2025630554
+  * González Martínez Danaet Montserrath — Boleta: 2025630554
   * Islas Ramirez Diego — Boleta: 2025630905
 
 ---
@@ -16,7 +16,6 @@
 * **Proyecto Propio:** Sistema de Gestión de Almacén y Centro de Distribución Automotriz **"El Pistón"** (Motor: PostgreSQL 16).
 * **Proyecto Asignado:** **Obra pública municipal** (*Federally Funded Public Works in Mexico: A Measured Lakehouse Layer*).
   * Repositorio / Fork local: [`Fork-PublicMunicipalWorks_IJCOPI`](../Fork-PublicMunicipalWorks_IJCOPI)
-  * Publicación científica base: Huavlen et al. (ICOKG 2026 / IJCOPI Special Issue).
 
 ---
 
@@ -68,12 +67,62 @@
   * Hechos, dimensiones, granularidad y omisión estratégica de FKs en DWH/Lakehouse: [integridad-almacen.md](practica5/integridad-almacen.md)
 * **Ejercicio 2.6: Trabajo individual por integrante**
   * Mario Garcia Castillo (Relación `PRODUCTO` <-> `DETALLE_ORDEN`): [mario-garcia.md](practica5/integrantes/mario-garcia.md)
-  * Danaet Montserrath Gonzáles Martínez (Relación `UBICACION` <-> `INVENTARIO_FISICO`): [danaet-gonzales.md](practica5/integrantes/danaet-gonzales.md)
+  * Danaet Montserrath González Martínez (Relación `UBICACION` <-> `INVENTARIO_FISICO`): [danaet-gonzalez.md](practica5/integrantes/danaet-gonzalez.md)
   * Diego Islas Ramirez (Relación `EMPLEADO` <-> `ORDEN_SALIDA`): [diego-islas.md](practica5/integrantes/diego-islas.md)
 
 ---
 
-## Interfaz Web de Demostración Operativa
-Se integró la aplicación web de gestión del almacén en [`app-almacen/`](app-almacen/), permitiendo consultar de forma visual e interactiva los 250 productos, ubicaciones, órdenes de salida y métricas operativas del Centro de Distribución "El Pistón".
-Para abrir la interfaz:
-* Abra con su navegador web el archivo [`app-almacen/index.html`](app-almacen/index.html).
+## Interfaz Web de Demostración Operativa y Entorno Contenerizado
+
+El sistema web de gestión logística del Centro de Distribución **"El Pistón"** opera bajo una arquitectura dual que se conecta en tiempo real a **PostgreSQL 16** en entornos locales con Docker Desktop y cambia automáticamente a modo estático al desplegarse en GitHub Pages.
+
+### Archivos de la Aplicación y del Entorno
+* **Aplicación Web ([`app-almacen/`](app-almacen/)):**
+  * Vista principal: [`app-almacen/index.html`](app-almacen/index.html)
+  * Hoja de estilos: [`app-almacen/css/styles.css`](app-almacen/css/styles.css)
+  * Lógica de interfaz y formularios: [`app-almacen/js/app.js`](app-almacen/js/app.js)
+  * Cliente de conexión dual (PostgreSQL vs. Modo Estático): [`app-almacen/js/db-client.js`](app-almacen/js/db-client.js)
+  * Respaldo de datos estáticos (GitHub Pages): [`app-almacen/js/mock-data.js`](app-almacen/js/mock-data.js)
+* **Entorno Docker y Backend ([`entorno/`](entorno/)):**
+  * Orquestación de contenedores: [`entorno/compose.yaml`](entorno/compose.yaml)
+  * API REST en FastAPI: [`entorno/api/main.py`](entorno/api/main.py) ([`Dockerfile`](entorno/api/Dockerfile) | [`requirements.txt`](entorno/api/requirements.txt))
+  * Esquema DDL de inicialización automática: [`entorno/db/init/01-esquema.sql`](entorno/db/init/01-esquema.sql)
+  * Datos semilla iniciales: [`entorno/db/init/02-datos-semilla.sql`](entorno/db/init/02-datos-semilla.sql)
+  * Pruebas manuales de restricciones: [`entorno/db/pruebas/prueba-de-restricciones.sql`](entorno/db/pruebas/prueba-de-restricciones.sql)
+
+### Ejecución Local Conectada a PostgreSQL (Docker Desktop)
+
+1. **Construir y levantar los contenedores:**
+   Abra Docker Desktop y, desde una terminal ubicada en la raíz del repositorio, ingrese a [`entorno/`](entorno/) para construir e iniciar los servicios (`piston_postgres`, `piston_api` y `piston_web`):
+   ```bash
+   cd entorno
+   docker compose up --build -d
+   ```
+
+2. **Acceder a la aplicación web y verificar el estado de conexión:**
+   * **Interfaz Web (`app-almacen`):** `http://localhost:8080` — Verifique en la esquina superior derecha que aparezca el indicador **`🟢 Conectado a PostgreSQL (Docker Local)`**.
+   * **Documentación interactiva de la API (Swagger):** `http://localhost:8000/docs`
+
+3. **Conectarse a la base de datos desde pgAdmin 4 (Recomendado):**
+   Para visualizar las tablas (`Schemas > public > Tables`), ejecutar consultas SQL y comprobar en tiempo real los registros insertados o modificados desde la web, registre un nuevo servidor en **pgAdmin 4** (`Object > Register > Server...`):
+   * En la pestaña **General**, asigne un nombre identificador en **Name** (ej. `El-Piston`).
+   * En la pestaña **Connection**, ingrese los siguientes parámetros:
+
+   | Campo en pgAdmin 4 | Valor | Dónde verificarlo en el proyecto |
+   | :--- | :--- | :--- |
+   | **Host name/address** | `localhost` | Equipo local donde corre Docker Desktop |
+   | **Port** | `5433` | [`entorno/compose.yaml`](entorno/compose.yaml) → `services.postgres.ports` (`"5433:5432"`) |
+   | **Maintenance database** | `almacen_piston` | [`entorno/compose.yaml`](entorno/compose.yaml) → `POSTGRES_DB` |
+   | **Username** | `admin` | [`entorno/compose.yaml`](entorno/compose.yaml) → `POSTGRES_USER` |
+   | **Password** | `admin123` | [`entorno/compose.yaml`](entorno/compose.yaml) → `POSTGRES_PASSWORD` |
+
+   * **Comprobación de cambios desde la web:** Abra **Query Tool** sobre la base de datos `almacen_piston` (o haga clic derecho sobre cualquier tabla > **View/Edit Data > All Rows**) y presione **`F5`** después de ejecutar cualquier acción en `http://localhost:8080` para refrescar los registros.
+
+4. **Solución en caso de conflicto de puertos con PostgreSQL local:**
+   Si en su equipo ya tiene instalado PostgreSQL de forma nativa ocupando el puerto configurado y pgAdmin muestra un error de autenticación (`FATAL: la autentificación password falló`), Windows está redirigiendo la conexión hacia su servidor local en lugar del contenedor Docker:
+   1. Abra [`entorno/compose.yaml`](entorno/compose.yaml) y ubique la sección `ports` dentro del servicio `postgres`.
+   2. Cambie únicamente el puerto externo (el número a la izquierda de los dos puntos) por otro disponible en su equipo, por ejemplo de `"5433:5432"` a `"5434:5432"` (conserve intacto el `5432` interno y la variable `DATABASE_URL` de la API).
+   3. Aplique el cambio ejecutando `docker compose up -d` dentro de [`entorno/`](entorno/) e ingrese ese mismo puerto nuevo (`5434`) en **pgAdmin 4**.
+
+### Ejecución en Modo Estático (GitHub Pages)
+* Al publicar la carpeta [`app-almacen/`](app-almacen/) en GitHub Pages o abrir [`app-almacen/index.html`](app-almacen/index.html) sin contenedores activos, [`db-client.js`](app-almacen/js/db-client.js) desactiva las peticiones HTTP y carga los registros desde [`mock-data.js`](app-almacen/js/mock-data.js).
