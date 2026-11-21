@@ -123,6 +123,3 @@ El sistema web de gestión logística del Centro de Distribución **"El Pistón"
    1. Abra [`entorno/compose.yaml`](entorno/compose.yaml) y ubique la sección `ports` dentro del servicio `postgres`.
    2. Cambie únicamente el puerto externo (el número a la izquierda de los dos puntos) por otro disponible en su equipo, por ejemplo de `"5433:5432"` a `"5434:5432"` (conserve intacto el `5432` interno y la variable `DATABASE_URL` de la API).
    3. Aplique el cambio ejecutando `docker compose up -d` dentro de [`entorno/`](entorno/) e ingrese ese mismo puerto nuevo (`5434`) en **pgAdmin 4**.
-
-### Ejecución en Modo Estático (GitHub Pages)
-* Al publicar la carpeta [`app-almacen/`](app-almacen/) en GitHub Pages o abrir [`app-almacen/index.html`](app-almacen/index.html) sin contenedores activos, [`db-client.js`](app-almacen/js/db-client.js) desactiva las peticiones HTTP y carga los registros desde [`mock-data.js`](app-almacen/js/mock-data.js).
