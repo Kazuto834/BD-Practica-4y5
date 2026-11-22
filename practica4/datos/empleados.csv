@@ -1,0 +1,21 @@
+﻿ID_Empleado,Nombre,Turno,Certificacion_Montacargas
+1,Mario Garcia Castillo,Matutino,TRUE
+2,Danaet Gonzáles Martínez,Vespertino,FALSE
+3,Diego Islas Ramirez,Nocturno,FALSE
+4,Carlos Mendoza Silva,Mixto,TRUE
+5,Ana Laura Paredes,Matutino,FALSE
+6,Roberto Hernandez Cruz,Vespertino,FALSE
+7,Sofia Jimenez Reyes,Nocturno,TRUE
+8,Miguel Angel Torres,Mixto,FALSE
+9,Lucia Vargas Ortiz,Matutino,FALSE
+10,Fernando Morales Ruiz,Vespertino,TRUE
+11,Patricia Delgado Castro,Nocturno,FALSE
+12,Eduardo Sanchez Peña,Mixto,FALSE
+13,Gabriela Romero Soto,Matutino,TRUE
+14,Alejandro Flores Perez,Vespertino,FALSE
+15,Valeria Gomez Lara,Nocturno,FALSE
+16,Ricardo Navarro Colin,Mixto,TRUE
+17,Mariana Chavez Diaz,Matutino,FALSE
+18,Daniel Gutierrez Mora,Vespertino,FALSE
+19,Beatriz Fuentes Cano,Nocturno,TRUE
+20,Hugo Ramirez Luna,Mixto,FALSE

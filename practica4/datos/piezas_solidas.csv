@@ -1,0 +1,226 @@
+﻿SKU,Material_Fabricacion,Fragil
+REP-FRE-0001,Aluminio aeronáutico 6061,FALSE
+REP-MOT-0002,Cerámica reforzada,FALSE
+REP-SUS-0003,Polímero ABS de alto impacto,FALSE
+REP-ELE-0004,Hierro nodular fundido,TRUE
+REP-TRA-0005,Cobre electrolítico,FALSE
+REP-ENF-0007,Acero al carbono forjado,FALSE
+REP-ESC-0008,Aluminio aeronáutico 6061,TRUE
+REP-CAR-0009,Cerámica reforzada,FALSE
+REP-ACC-0010,Polímero ABS de alto impacto,FALSE
+REP-FRE-0011,Hierro nodular fundido,FALSE
+REP-MOT-0012,Cobre electrolítico,TRUE
+REP-SUS-0013,Fibra de carbono compuesta,FALSE
+REP-ELE-0014,Acero al carbono forjado,FALSE
+REP-TRA-0015,Aluminio aeronáutico 6061,FALSE
+REP-ENF-0017,Polímero ABS de alto impacto,FALSE
+REP-ESC-0018,Hierro nodular fundido,FALSE
+REP-CAR-0019,Cobre electrolítico,FALSE
+REP-ACC-0020,Fibra de carbono compuesta,TRUE
+REP-FRE-0021,Acero al carbono forjado,FALSE
+REP-MOT-0022,Aluminio aeronáutico 6061,FALSE
+REP-SUS-0023,Cerámica reforzada,FALSE
+REP-ELE-0024,Polímero ABS de alto impacto,TRUE
+REP-TRA-0025,Hierro nodular fundido,FALSE
+REP-ENF-0027,Fibra de carbono compuesta,FALSE
+REP-ESC-0028,Acero al carbono forjado,TRUE
+REP-CAR-0029,Aluminio aeronáutico 6061,FALSE
+REP-ACC-0030,Cerámica reforzada,FALSE
+REP-FRE-0031,Polímero ABS de alto impacto,FALSE
+REP-MOT-0032,Hierro nodular fundido,TRUE
+REP-SUS-0033,Cobre electrolítico,FALSE
+REP-ELE-0034,Fibra de carbono compuesta,FALSE
+REP-TRA-0035,Acero al carbono forjado,FALSE
+REP-ENF-0037,Cerámica reforzada,FALSE
+REP-ESC-0038,Polímero ABS de alto impacto,FALSE
+REP-CAR-0039,Hierro nodular fundido,FALSE
+REP-ACC-0040,Cobre electrolítico,TRUE
+REP-FRE-0041,Fibra de carbono compuesta,FALSE
+REP-MOT-0042,Acero al carbono forjado,FALSE
+REP-SUS-0043,Aluminio aeronáutico 6061,FALSE
+REP-ELE-0044,Cerámica reforzada,TRUE
+REP-TRA-0045,Polímero ABS de alto impacto,FALSE
+REP-ENF-0047,Cobre electrolítico,FALSE
+REP-ESC-0048,Fibra de carbono compuesta,TRUE
+REP-CAR-0049,Acero al carbono forjado,FALSE
+REP-ACC-0050,Aluminio aeronáutico 6061,FALSE
+REP-FRE-0051,Cerámica reforzada,FALSE
+REP-MOT-0052,Polímero ABS de alto impacto,TRUE
+REP-SUS-0053,Hierro nodular fundido,FALSE
+REP-ELE-0054,Cobre electrolítico,FALSE
+REP-TRA-0055,Fibra de carbono compuesta,FALSE
+REP-ENF-0057,Aluminio aeronáutico 6061,FALSE
+REP-ESC-0058,Cerámica reforzada,FALSE
+REP-CAR-0059,Polímero ABS de alto impacto,FALSE
+REP-ACC-0060,Hierro nodular fundido,TRUE
+REP-FRE-0061,Cobre electrolítico,FALSE
+REP-MOT-0062,Fibra de carbono compuesta,FALSE
+REP-SUS-0063,Acero al carbono forjado,FALSE
+REP-ELE-0064,Aluminio aeronáutico 6061,TRUE
+REP-TRA-0065,Cerámica reforzada,FALSE
+REP-ENF-0067,Hierro nodular fundido,FALSE
+REP-ESC-0068,Cobre electrolítico,TRUE
+REP-CAR-0069,Fibra de carbono compuesta,FALSE
+REP-ACC-0070,Acero al carbono forjado,FALSE
+REP-FRE-0071,Aluminio aeronáutico 6061,FALSE
+REP-MOT-0072,Cerámica reforzada,TRUE
+REP-SUS-0073,Polímero ABS de alto impacto,FALSE
+REP-ELE-0074,Hierro nodular fundido,FALSE
+REP-TRA-0075,Cobre electrolítico,FALSE
+REP-ENF-0077,Acero al carbono forjado,FALSE
+REP-ESC-0078,Aluminio aeronáutico 6061,FALSE
+REP-CAR-0079,Cerámica reforzada,FALSE
+REP-ACC-0080,Polímero ABS de alto impacto,TRUE
+REP-FRE-0081,Hierro nodular fundido,FALSE
+REP-MOT-0082,Cobre electrolítico,FALSE
+REP-SUS-0083,Fibra de carbono compuesta,FALSE
+REP-ELE-0084,Acero al carbono forjado,TRUE
+REP-TRA-0085,Aluminio aeronáutico 6061,FALSE
+REP-ENF-0087,Polímero ABS de alto impacto,FALSE
+REP-ESC-0088,Hierro nodular fundido,TRUE
+REP-CAR-0089,Cobre electrolítico,FALSE
+REP-ACC-0090,Fibra de carbono compuesta,FALSE
+REP-FRE-0091,Acero al carbono forjado,FALSE
+REP-MOT-0092,Aluminio aeronáutico 6061,TRUE
+REP-SUS-0093,Cerámica reforzada,FALSE
+REP-ELE-0094,Polímero ABS de alto impacto,FALSE
+REP-TRA-0095,Hierro nodular fundido,FALSE
+REP-ENF-0097,Fibra de carbono compuesta,FALSE
+REP-ESC-0098,Acero al carbono forjado,FALSE
+REP-CAR-0099,Aluminio aeronáutico 6061,FALSE
+REP-ACC-0100,Cerámica reforzada,TRUE
+REP-FRE-0101,Polímero ABS de alto impacto,FALSE
+REP-MOT-0102,Hierro nodular fundido,FALSE
+REP-SUS-0103,Cobre electrolítico,FALSE
+REP-ELE-0104,Fibra de carbono compuesta,TRUE
+REP-TRA-0105,Acero al carbono forjado,FALSE
+REP-ENF-0107,Cerámica reforzada,FALSE
+REP-ESC-0108,Polímero ABS de alto impacto,TRUE
+REP-CAR-0109,Hierro nodular fundido,FALSE
+REP-ACC-0110,Cobre electrolítico,FALSE
+REP-FRE-0111,Fibra de carbono compuesta,FALSE
+REP-MOT-0112,Acero al carbono forjado,TRUE
+REP-SUS-0113,Aluminio aeronáutico 6061,FALSE
+REP-ELE-0114,Cerámica reforzada,FALSE
+REP-TRA-0115,Polímero ABS de alto impacto,FALSE
+REP-ENF-0117,Cobre electrolítico,FALSE
+REP-ESC-0118,Fibra de carbono compuesta,FALSE
+REP-CAR-0119,Acero al carbono forjado,FALSE
+REP-ACC-0120,Aluminio aeronáutico 6061,TRUE
+REP-FRE-0121,Cerámica reforzada,FALSE
+REP-MOT-0122,Polímero ABS de alto impacto,FALSE
+REP-SUS-0123,Hierro nodular fundido,FALSE
+REP-ELE-0124,Cobre electrolítico,TRUE
+REP-TRA-0125,Fibra de carbono compuesta,FALSE
+REP-ENF-0127,Aluminio aeronáutico 6061,FALSE
+REP-ESC-0128,Cerámica reforzada,TRUE
+REP-CAR-0129,Polímero ABS de alto impacto,FALSE
+REP-ACC-0130,Hierro nodular fundido,FALSE
+REP-FRE-0131,Cobre electrolítico,FALSE
+REP-MOT-0132,Fibra de carbono compuesta,TRUE
+REP-SUS-0133,Acero al carbono forjado,FALSE
+REP-ELE-0134,Aluminio aeronáutico 6061,FALSE
+REP-TRA-0135,Cerámica reforzada,FALSE
+REP-ENF-0137,Hierro nodular fundido,FALSE
+REP-ESC-0138,Cobre electrolítico,FALSE
+REP-CAR-0139,Fibra de carbono compuesta,FALSE
+REP-ACC-0140,Acero al carbono forjado,TRUE
+REP-FRE-0141,Aluminio aeronáutico 6061,FALSE
+REP-MOT-0142,Cerámica reforzada,FALSE
+REP-SUS-0143,Polímero ABS de alto impacto,FALSE
+REP-ELE-0144,Hierro nodular fundido,TRUE
+REP-TRA-0145,Cobre electrolítico,FALSE
+REP-ENF-0147,Acero al carbono forjado,FALSE
+REP-ESC-0148,Aluminio aeronáutico 6061,TRUE
+REP-CAR-0149,Cerámica reforzada,FALSE
+REP-ACC-0150,Polímero ABS de alto impacto,FALSE
+REP-FRE-0151,Hierro nodular fundido,FALSE
+REP-MOT-0152,Cobre electrolítico,TRUE
+REP-SUS-0153,Fibra de carbono compuesta,FALSE
+REP-ELE-0154,Acero al carbono forjado,FALSE
+REP-TRA-0155,Aluminio aeronáutico 6061,FALSE
+REP-ENF-0157,Polímero ABS de alto impacto,FALSE
+REP-ESC-0158,Hierro nodular fundido,FALSE
+REP-CAR-0159,Cobre electrolítico,FALSE
+REP-ACC-0160,Fibra de carbono compuesta,TRUE
+REP-FRE-0161,Acero al carbono forjado,FALSE
+REP-MOT-0162,Aluminio aeronáutico 6061,FALSE
+REP-SUS-0163,Cerámica reforzada,FALSE
+REP-ELE-0164,Polímero ABS de alto impacto,TRUE
+REP-TRA-0165,Hierro nodular fundido,FALSE
+REP-ENF-0167,Fibra de carbono compuesta,FALSE
+REP-ESC-0168,Acero al carbono forjado,TRUE
+REP-CAR-0169,Aluminio aeronáutico 6061,FALSE
+REP-ACC-0170,Cerámica reforzada,FALSE
+REP-FRE-0171,Polímero ABS de alto impacto,FALSE
+REP-MOT-0172,Hierro nodular fundido,TRUE
+REP-SUS-0173,Cobre electrolítico,FALSE
+REP-ELE-0174,Fibra de carbono compuesta,FALSE
+REP-TRA-0175,Acero al carbono forjado,FALSE
+REP-ENF-0177,Cerámica reforzada,FALSE
+REP-ESC-0178,Polímero ABS de alto impacto,FALSE
+REP-CAR-0179,Hierro nodular fundido,FALSE
+REP-ACC-0180,Cobre electrolítico,TRUE
+REP-FRE-0181,Fibra de carbono compuesta,FALSE
+REP-MOT-0182,Acero al carbono forjado,FALSE
+REP-SUS-0183,Aluminio aeronáutico 6061,FALSE
+REP-ELE-0184,Cerámica reforzada,TRUE
+REP-TRA-0185,Polímero ABS de alto impacto,FALSE
+REP-ENF-0187,Cobre electrolítico,FALSE
+REP-ESC-0188,Fibra de carbono compuesta,TRUE
+REP-CAR-0189,Acero al carbono forjado,FALSE
+REP-ACC-0190,Aluminio aeronáutico 6061,FALSE
+REP-FRE-0191,Cerámica reforzada,FALSE
+REP-MOT-0192,Polímero ABS de alto impacto,TRUE
+REP-SUS-0193,Hierro nodular fundido,FALSE
+REP-ELE-0194,Cobre electrolítico,FALSE
+REP-TRA-0195,Fibra de carbono compuesta,FALSE
+REP-ENF-0197,Aluminio aeronáutico 6061,FALSE
+REP-ESC-0198,Cerámica reforzada,FALSE
+REP-CAR-0199,Polímero ABS de alto impacto,FALSE
+REP-ACC-0200,Hierro nodular fundido,TRUE
+REP-FRE-0201,Cobre electrolítico,FALSE
+REP-MOT-0202,Fibra de carbono compuesta,FALSE
+REP-SUS-0203,Acero al carbono forjado,FALSE
+REP-ELE-0204,Aluminio aeronáutico 6061,TRUE
+REP-TRA-0205,Cerámica reforzada,FALSE
+REP-ENF-0207,Hierro nodular fundido,FALSE
+REP-ESC-0208,Cobre electrolítico,TRUE
+REP-CAR-0209,Fibra de carbono compuesta,FALSE
+REP-ACC-0210,Acero al carbono forjado,FALSE
+REP-FRE-0211,Aluminio aeronáutico 6061,FALSE
+REP-MOT-0212,Cerámica reforzada,TRUE
+REP-SUS-0213,Polímero ABS de alto impacto,FALSE
+REP-ELE-0214,Hierro nodular fundido,FALSE
+REP-TRA-0215,Cobre electrolítico,FALSE
+REP-ENF-0217,Acero al carbono forjado,FALSE
+REP-ESC-0218,Aluminio aeronáutico 6061,FALSE
+REP-CAR-0219,Cerámica reforzada,FALSE
+REP-ACC-0220,Polímero ABS de alto impacto,TRUE
+REP-FRE-0221,Hierro nodular fundido,FALSE
+REP-MOT-0222,Cobre electrolítico,FALSE
+REP-SUS-0223,Fibra de carbono compuesta,FALSE
+REP-ELE-0224,Acero al carbono forjado,TRUE
+REP-TRA-0225,Aluminio aeronáutico 6061,FALSE
+REP-ENF-0227,Polímero ABS de alto impacto,FALSE
+REP-ESC-0228,Hierro nodular fundido,TRUE
+REP-CAR-0229,Cobre electrolítico,FALSE
+REP-ACC-0230,Fibra de carbono compuesta,FALSE
+REP-FRE-0231,Acero al carbono forjado,FALSE
+REP-MOT-0232,Aluminio aeronáutico 6061,TRUE
+REP-SUS-0233,Cerámica reforzada,FALSE
+REP-ELE-0234,Polímero ABS de alto impacto,FALSE
+REP-TRA-0235,Hierro nodular fundido,FALSE
+REP-ENF-0237,Fibra de carbono compuesta,FALSE
+REP-ESC-0238,Acero al carbono forjado,FALSE
+REP-CAR-0239,Aluminio aeronáutico 6061,FALSE
+REP-ACC-0240,Cerámica reforzada,TRUE
+REP-FRE-0241,Polímero ABS de alto impacto,FALSE
+REP-MOT-0242,Hierro nodular fundido,FALSE
+REP-SUS-0243,Cobre electrolítico,FALSE
+REP-ELE-0244,Fibra de carbono compuesta,TRUE
+REP-TRA-0245,Acero al carbono forjado,FALSE
+REP-ENF-0247,Cerámica reforzada,FALSE
+REP-ESC-0248,Polímero ABS de alto impacto,TRUE
+REP-CAR-0249,Hierro nodular fundido,FALSE
+REP-ACC-0250,Cobre electrolítico,FALSE

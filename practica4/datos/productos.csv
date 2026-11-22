@@ -1,0 +1,251 @@
+﻿SKU,Nombre,Largo_cm,Ancho_cm,Alto_cm,Peso_Kg,ID_Categoria
+REP-FRE-0001,Pastillas de Freno Cerámicas Spec-1,13.7,10.3,6.9,1.8,1
+REP-MOT-0002,Pistón Forjado con Anillos Spec-2,17.4,12.6,8.8,3.25,2
+REP-SUS-0003,Amortiguador de Gas Reforzado Spec-3,21.1,14.9,10.7,4.7,3
+REP-ELE-0004,Alternador 120 Amperios Spec-4,24.8,17.2,12.6,6.15,4
+REP-TRA-0005,Kit de Embrague Reforzado Spec-5,28.5,19.5,14.5,7.6,5
+REP-QUI-0006,Aceite de Motor Semi-Sintético 10W-40 Spec-6,32.2,21.8,16.4,9.05,6
+REP-ENF-0007,Termostato de Apertura 82C Spec-7,35.9,24.1,18.3,10.5,7
+REP-ESC-0008,Silenciador Trasero de Acero Inoxidable Spec-8,39.6,26.4,20.2,11.95,8
+REP-CAR-0009,Calavera Trasera Ahumada Spec-9,43.3,28.7,22.1,13.4,9
+REP-ACC-0010,Tapete de Uso Rudo Termoformado Spec-10,47,31,24,14.85,10
+REP-FRE-0011,Disco de Freno Ventilado Spec-11,50.7,33.3,25.9,16.3,1
+REP-MOT-0012,Árbol de Levas Deportivo Spec-12,54.4,35.6,27.8,17.75,2
+REP-SUS-0013,Resorte Helicoidal Progresivo Spec-13,58.1,37.9,29.7,19.2,3
+REP-ELE-0014,Motor de Arranque Reducido Spec-14,61.8,40.2,31.6,20.65,4
+REP-TRA-0015,Collarín Hidráulico de Empuje Spec-15,65.5,42.5,33.5,22.1,5
+REP-QUI-0016,Líquido de Frenos Sintético DOT 4 Spec-16,69.2,44.8,35.4,23.55,6
+REP-ENF-0017,Bomba de Agua con Aspas Metálicas Spec-17,72.9,47.1,37.3,25,7
+REP-ESC-0018,Múltiple de Escape Tubular Spec-18,76.6,49.4,39.2,26.45,8
+REP-CAR-0019,Espejo Lateral Eléctrico con Desempañante Spec-19,80.3,51.7,41.1,27.9,9
+REP-ACC-0020,Kit de Focos LED H4 Ultra Brillantes Spec-20,84,54,43,0.85,10
+REP-FRE-0021,Calíper Delantero Spec-21,87.7,56.3,44.9,2.3,1
+REP-MOT-0022,Bielas de Alta Resistencia Spec-22,91.4,58.6,46.8,3.75,2
+REP-SUS-0023,Rótula de Suspensión Inferior Spec-23,10.1,60.9,48.7,5.2,3
+REP-ELE-0024,Batería de Gel AGM 12V Spec-24,13.8,63.2,5.6,6.65,4
+REP-TRA-0025,Collarín Hidráulico de Empuje Spec-25,17.5,65.5,7.5,8.1,5
+REP-QUI-0026,Anticongelante Refrigerante 50/50 OAT Spec-26,21.2,67.8,9.4,9.55,6
+REP-ENF-0027,Ventilador Eléctrico de Enfriamiento Spec-27,24.9,70.1,11.3,11,7
+REP-ESC-0028,Resonador Intermedio Deportivo Spec-28,28.6,72.4,13.2,12.45,8
+REP-CAR-0029,Cofre de Acero Prensado Spec-29,32.3,9.7,15.1,13.9,9
+REP-ACC-0030,Cubrepolvo de Dirección de Caucho Spec-30,36,12,17,15.35,10
+REP-FRE-0031,Tambor de Freno Trasero Spec-31,39.7,14.3,18.9,16.8,1
+REP-MOT-0032,Junta de Culata Multilámina Spec-32,43.4,16.6,20.8,18.25,2
+REP-SUS-0033,Terminal de Dirección Externa Spec-33,47.1,18.9,22.7,19.7,3
+REP-ELE-0034,Bobina de Encendido Individual Spec-34,50.8,21.2,24.6,21.15,4
+REP-TRA-0035,Soporte de Caja de Velocidades Spec-35,54.5,23.5,26.5,22.6,5
+REP-QUI-0036,Fluido de Transmisión Automática ATF Dexron VI Spec-36,58.2,25.8,28.4,24.05,6
+REP-ENF-0037,Depósito de Expansión Anticongelante Spec-37,61.9,28.1,30.3,25.5,7
+REP-ESC-0038,Abrazadera de Tubo de Escape Spec-38,65.6,30.4,32.2,26.95,8
+REP-CAR-0039,Facia Delantera con Guías Spec-39,69.3,32.7,34.1,28.4,9
+REP-ACC-0040,Bocina de Aire Tipo Claxon Spec-40,73,35,36,1.35,10
+REP-FRE-0041,Cilindro Maestro de Frenos Spec-41,76.7,37.3,37.9,2.8,1
+REP-MOT-0042,Bomba de Aceite de Alta Presión Spec-42,80.4,39.6,39.8,4.25,2
+REP-SUS-0043,Bieleta de Barra Estabilizadora Spec-43,84.1,41.9,41.7,5.7,3
+REP-ELE-0044,Juego de Cables de Bujía 8mm Spec-44,87.8,44.2,43.6,7.15,4
+REP-TRA-0045,Soporte de Caja de Velocidades Spec-45,91.5,46.5,45.5,8.6,5
+REP-QUI-0046,Grasa para Baleros de Alta Temperatura Spec-46,10.2,48.8,47.4,10.05,6
+REP-ENF-0047,Manguera Superior de Radiador Spec-47,13.9,51.1,49.3,11.5,7
+REP-ESC-0048,Sensor de Temperatura de Gases EGT Spec-48,17.6,53.4,6.2,12.95,8
+REP-CAR-0049,Manija de Puerta Exterior Spec-49,21.3,55.7,8.1,14.4,9
+REP-ACC-0050,Compresor de Aire Portátil 12V Spec-50,25,58,10,15.85,10
+REP-FRE-0051,Manguera de Freno Blindada Spec-51,28.7,60.3,11.9,17.3,1
+REP-MOT-0052,Válvula de Admisión de Titanio Spec-52,32.4,62.6,13.8,18.75,2
+REP-SUS-0053,Brazo de Control Delantero Spec-53,36.1,64.9,15.7,20.2,3
+REP-ELE-0054,Bujía de Iridio Punta Fina Spec-54,39.8,67.2,17.6,21.65,4
+REP-TRA-0055,Retén de Flecha Salida Spec-55,43.5,69.5,19.5,23.1,5
+REP-QUI-0056,Limpiador de Inyectores Concentrado Spec-56,47.2,71.8,21.4,24.55,6
+REP-ENF-0057,Sensor de Temperatura ECT Spec-57,50.9,9.1,23.3,26,7
+REP-ESC-0058,Junta de Brida de Escape Spec-58,54.6,11.4,25.2,27.45,8
+REP-CAR-0059,Amortiguador Telescópico de Cajuela Spec-59,58.3,13.7,27.1,0.4,9
+REP-ACC-0060,Cargador Rápido USB para Encendedor Spec-60,62,16,29,1.85,10
+REP-FRE-0061,Bomba de Vacío Booster Spec-61,65.7,18.3,30.9,3.3,1
+REP-MOT-0062,Cadena de Distribución Spec-62,69.4,20.6,32.8,4.75,2
+REP-SUS-0063,Buje de Horquilla Poliuretano Spec-63,73.1,22.9,34.7,6.2,3
+REP-ELE-0064,Sensor de Oxígeno Primario Spec-64,76.8,25.2,36.6,7.65,4
+REP-TRA-0065,Retén de Flecha Salida Spec-65,80.5,27.5,38.5,9.1,5
+REP-QUI-0066,Líquido de Dirección Asistida Hidráulica Spec-66,84.2,29.8,40.4,10.55,6
+REP-ENF-0067,Tapón de Radiador 1.1 Bar Spec-67,87.9,32.1,42.3,12,7
+REP-ESC-0068,Tubo Flexible de Escape Reforzado Spec-68,91.6,34.4,44.2,13.45,8
+REP-CAR-0069,Moldura de Salpicadera Plástica Spec-69,10.3,36.7,46.1,14.9,9
+REP-ACC-0070,Filtro de Aire de Cabina con Carbón Activado Spec-70,14,39,48,16.35,10
+REP-FRE-0071,Sensor de Desgaste Balatas Spec-71,17.7,41.3,49.9,17.8,1
+REP-MOT-0072,Polea Tensora de Distribución Spec-72,21.4,43.6,6.8,19.25,2
+REP-SUS-0073,Cremallera de Dirección Hidráulica Spec-73,25.1,45.9,8.7,20.7,3
+REP-ELE-0074,Sensor de Posición Cigüeñal CKP Spec-74,28.8,48.2,10.6,22.15,4
+REP-TRA-0075, Spec-75,32.5,50.5,12.5,23.6,5
+REP-QUI-0076,Aflojatodo Penetrante en Aerosol Spec-76,36.2,52.8,14.4,25.05,6
+REP-ENF-0077, Spec-77,39.9,55.1,16.3,26.5,7
+REP-ESC-0078, Spec-78,43.6,57.4,18.2,27.95,8
+REP-CAR-0079, Spec-79,47.3,59.7,20.1,0.9,9
+REP-ACC-0080,Plumas Limpiaparabrisas de Silicona Spec-80,51,62,22,2.35,10
+REP-FRE-0081,Pastillas de Freno Cerámicas Spec-81,54.7,64.3,23.9,3.8,1
+REP-MOT-0082,Pistón Forjado con Anillos Spec-82,58.4,66.6,25.8,5.25,2
+REP-SUS-0083,Amortiguador de Gas Reforzado Spec-83,62.1,68.9,27.7,6.7,3
+REP-ELE-0084,Alternador 120 Amperios Spec-84,65.8,71.2,29.6,8.15,4
+REP-TRA-0085,Kit de Embrague Reforzado Spec-85,69.5,8.5,31.5,9.6,5
+REP-QUI-0086,Desengrasante Biodegradable para Motor Spec-86,73.2,10.8,33.4,11.05,6
+REP-ENF-0087,Termostato de Apertura 82C Spec-87,76.9,13.1,35.3,12.5,7
+REP-ESC-0088,Silenciador Trasero de Acero Inoxidable Spec-88,80.6,15.4,37.2,13.95,8
+REP-CAR-0089,Calavera Trasera Ahumada Spec-89,84.3,17.7,39.1,15.4,9
+REP-ACC-0090,Tapete de Uso Rudo Termoformado Spec-90,88,20,41,16.85,10
+REP-FRE-0091,Disco de Freno Ventilado Spec-91,91.7,22.3,42.9,18.3,1
+REP-MOT-0092,Árbol de Levas Deportivo Spec-92,10.4,24.6,44.8,19.75,2
+REP-SUS-0093,Resorte Helicoidal Progresivo Spec-93,14.1,26.9,46.7,21.2,3
+REP-ELE-0094,Motor de Arranque Reducido Spec-94,17.8,29.2,48.6,22.65,4
+REP-TRA-0095,Collarín Hidráulico de Empuje Spec-95,21.5,31.5,5.5,24.1,5
+REP-QUI-0096, Spec-96,25.2,33.8,7.4,25.55,6
+REP-ENF-0097,Bomba de Agua con Aspas Metálicas Spec-97,28.9,36.1,9.3,27,7
+REP-ESC-0098,Múltiple de Escape Tubular Spec-98,32.6,38.4,11.2,28.45,8
+REP-CAR-0099,Espejo Lateral Eléctrico con Desempañante Spec-99,36.3,40.7,13.1,1.4,9
+REP-ACC-0100,Kit de Focos LED H4 Ultra Brillantes Spec-100,40,43,15,2.85,10
+REP-FRE-0101,Calíper Delantero Spec-101,43.7,45.3,16.9,4.3,1
+REP-MOT-0102,Bielas de Alta Resistencia Spec-102,47.4,47.6,18.8,5.75,2
+REP-SUS-0103,Rótula de Suspensión Inferior Spec-103,51.1,49.9,20.7,7.2,3
+REP-ELE-0104,Batería de Gel AGM 12V Spec-104,54.8,52.2,22.6,8.65,4
+REP-TRA-0105,Collarín Hidráulico de Empuje Spec-105,58.5,54.5,24.5,10.1,5
+REP-QUI-0106,Aceite de Motor Semi-Sintético 10W-40 Spec-106,62.2,56.8,26.4,11.55,6
+REP-ENF-0107,Ventilador Eléctrico de Enfriamiento Spec-107,65.9,59.1,28.3,13,7
+REP-ESC-0108,Resonador Intermedio Deportivo Spec-108,69.6,61.4,30.2,14.45,8
+REP-CAR-0109,Cofre de Acero Prensado Spec-109,73.3,63.7,32.1,15.9,9
+REP-ACC-0110,Cubrepolvo de Dirección de Caucho Spec-110,77,66,34,17.35,10
+REP-FRE-0111,Tambor de Freno Trasero Spec-111,80.7,68.3,35.9,18.8,1
+REP-MOT-0112,Junta de Culata Multilámina Spec-112,84.4,70.6,37.8,20.25,2
+REP-SUS-0113,Terminal de Dirección Externa Spec-113,88.1,72.9,39.7,21.7,3
+REP-ELE-0114,Bobina de Encendido Individual Spec-114,91.8,10.2,41.6,23.15,4
+REP-TRA-0115,Soporte de Caja de Velocidades Spec-115,10.5,12.5,43.5,24.6,5
+REP-QUI-0116,Líquido de Frenos Sintético DOT 4 Spec-116,14.2,14.8,45.4,26.05,6
+REP-ENF-0117,Depósito de Expansión Anticongelante Spec-117,17.9,17.1,47.3,27.5,7
+REP-ESC-0118,Abrazadera de Tubo de Escape Spec-118,21.6,19.4,49.2,0.45,8
+REP-CAR-0119,Facia Delantera con Guías Spec-119,25.3,21.7,6.1,1.9,9
+REP-ACC-0120,Bocina de Aire Tipo Claxon Spec-120,29,24,8,3.35,10
+REP-FRE-0121,Cilindro Maestro de Frenos Spec-121,32.7,26.3,9.9,4.8,1
+REP-MOT-0122,Bomba de Aceite de Alta Presión Spec-122,36.4,28.6,11.8,6.25,2
+REP-SUS-0123,Bieleta de Barra Estabilizadora Spec-123,40.1,30.9,13.7,7.7,3
+REP-ELE-0124,Juego de Cables de Bujía 8mm Spec-124,43.8,33.2,15.6,9.15,4
+REP-TRA-0125,Soporte de Caja de Velocidades Spec-125,47.5,35.5,17.5,10.6,5
+REP-QUI-0126,Anticongelante Refrigerante 50/50 OAT Spec-126,51.2,37.8,19.4,12.05,6
+REP-ENF-0127,Manguera Superior de Radiador Spec-127,54.9,40.1,21.3,13.5,7
+REP-ESC-0128,Sensor de Temperatura de Gases EGT Spec-128,58.6,42.4,23.2,14.95,8
+REP-CAR-0129,Manija de Puerta Exterior Spec-129,62.3,44.7,25.1,16.4,9
+REP-ACC-0130,Compresor de Aire Portátil 12V Spec-130,66,47,27,17.85,10
+REP-FRE-0131,Manguera de Freno Blindada Spec-131,69.7,49.3,28.9,19.3,1
+REP-MOT-0132,Válvula de Admisión de Titanio Spec-132,73.4,51.6,30.8,20.75,2
+REP-SUS-0133,Brazo de Control Delantero Spec-133,77.1,53.9,32.7,22.2,3
+REP-ELE-0134,Bujía de Iridio Punta Fina Spec-134,80.8,56.2,34.6,23.65,4
+REP-TRA-0135,Retén de Flecha Salida Spec-135,84.5,58.5,36.5,25.1,5
+REP-QUI-0136,Fluido de Transmisión Automática ATF Dexron VI Spec-136,88.2,60.8,38.4,26.55,6
+REP-ENF-0137,Sensor de Temperatura ECT Spec-137,91.9,63.1,40.3,28,7
+REP-ESC-0138,Junta de Brida de Escape Spec-138,10.6,65.4,42.2,0.95,8
+REP-CAR-0139,Amortiguador Telescópico de Cajuela Spec-139,14.3,67.7,44.1,2.4,9
+REP-ACC-0140,Cargador Rápido USB para Encendedor Spec-140,18,70,46,3.85,10
+REP-FRE-0141,Bomba de Vacío Booster Spec-141,21.7,72.3,47.9,5.3,1
+REP-MOT-0142,Cadena de Distribución Spec-142,25.4,9.6,49.8,6.75,2
+REP-SUS-0143,Buje de Horquilla Poliuretano Spec-143,29.1,11.9,6.7,8.2,3
+REP-ELE-0144,Sensor de Oxígeno Primario Spec-144,32.8,14.2,8.6,9.65,4
+REP-TRA-0145,Retén de Flecha Salida Spec-145,36.5,16.5,10.5,11.1,5
+REP-QUI-0146,Grasa para Baleros de Alta Temperatura Spec-146,40.2,18.8,12.4,12.55,6
+REP-ENF-0147,Tapón de Radiador 1.1 Bar Spec-147,43.9,21.1,14.3,14,7
+REP-ESC-0148,Tubo Flexible de Escape Reforzado Spec-148,47.6,23.4,16.2,15.45,8
+REP-CAR-0149,Moldura de Salpicadera Plástica Spec-149,51.3,25.7,18.1,16.9,9
+REP-ACC-0150,Filtro de Aire de Cabina con Carbón Activado Spec-150,55,28,20,18.35,10
+REP-FRE-0151,Sensor de Desgaste Balatas Spec-151,58.7,30.3,21.9,19.8,1
+REP-MOT-0152,Polea Tensora de Distribución Spec-152,62.4,32.6,23.8,21.25,2
+REP-SUS-0153,Cremallera de Dirección Hidráulica Spec-153,66.1,34.9,25.7,22.7,3
+REP-ELE-0154,Sensor de Posición Cigüeñal CKP Spec-154,69.8,37.2,27.6,24.15,4
+REP-TRA-0155, Spec-155,73.5,39.5,29.5,25.6,5
+REP-QUI-0156,Limpiador de Inyectores Concentrado Spec-156,77.2,41.8,31.4,27.05,6
+REP-ENF-0157, Spec-157,80.9,44.1,33.3,28.5,7
+REP-ESC-0158, Spec-158,84.6,46.4,35.2,1.45,8
+REP-CAR-0159, Spec-159,88.3,48.7,37.1,2.9,9
+REP-ACC-0160,Plumas Limpiaparabrisas de Silicona Spec-160,92,51,39,4.35,10
+REP-FRE-0161,Pastillas de Freno Cerámicas Spec-161,10.7,53.3,40.9,5.8,1
+REP-MOT-0162,Pistón Forjado con Anillos Spec-162,14.4,55.6,42.8,7.25,2
+REP-SUS-0163,Amortiguador de Gas Reforzado Spec-163,18.1,57.9,44.7,8.7,3
+REP-ELE-0164,Alternador 120 Amperios Spec-164,21.8,60.2,46.6,10.15,4
+REP-TRA-0165,Kit de Embrague Reforzado Spec-165,25.5,62.5,48.5,11.6,5
+REP-QUI-0166,Líquido de Dirección Asistida Hidráulica Spec-166,29.2,64.8,5.4,13.05,6
+REP-ENF-0167,Termostato de Apertura 82C Spec-167,32.9,67.1,7.3,14.5,7
+REP-ESC-0168,Silenciador Trasero de Acero Inoxidable Spec-168,36.6,69.4,9.2,15.95,8
+REP-CAR-0169,Calavera Trasera Ahumada Spec-169,40.3,71.7,11.1,17.4,9
+REP-ACC-0170,Tapete de Uso Rudo Termoformado Spec-170,44,9,13,18.85,10
+REP-FRE-0171,Disco de Freno Ventilado Spec-171,47.7,11.3,14.9,20.3,1
+REP-MOT-0172,Árbol de Levas Deportivo Spec-172,51.4,13.6,16.8,21.75,2
+REP-SUS-0173,Resorte Helicoidal Progresivo Spec-173,55.1,15.9,18.7,23.2,3
+REP-ELE-0174,Motor de Arranque Reducido Spec-174,58.8,18.2,20.6,24.65,4
+REP-TRA-0175,Collarín Hidráulico de Empuje Spec-175,62.5,20.5,22.5,26.1,5
+REP-QUI-0176,Aflojatodo Penetrante en Aerosol Spec-176,66.2,22.8,24.4,27.55,6
+REP-ENF-0177,Bomba de Agua con Aspas Metálicas Spec-177,69.9,25.1,26.3,0.5,7
+REP-ESC-0178,Múltiple de Escape Tubular Spec-178,73.6,27.4,28.2,1.95,8
+REP-CAR-0179,Espejo Lateral Eléctrico con Desempañante Spec-179,77.3,29.7,30.1,3.4,9
+REP-ACC-0180,Kit de Focos LED H4 Ultra Brillantes Spec-180,81,32,32,4.85,10
+REP-FRE-0181,Calíper Delantero Spec-181,84.7,34.3,33.9,6.3,1
+REP-MOT-0182,Bielas de Alta Resistencia Spec-182,88.4,36.6,35.8,7.75,2
+REP-SUS-0183,Rótula de Suspensión Inferior Spec-183,92.1,38.9,37.7,9.2,3
+REP-ELE-0184,Batería de Gel AGM 12V Spec-184,10.8,41.2,39.6,10.65,4
+REP-TRA-0185,Collarín Hidráulico de Empuje Spec-185,14.5,43.5,41.5,12.1,5
+REP-QUI-0186,Desengrasante Biodegradable para Motor Spec-186,18.2,45.8,43.4,13.55,6
+REP-ENF-0187,Ventilador Eléctrico de Enfriamiento Spec-187,21.9,48.1,45.3,15,7
+REP-ESC-0188,Resonador Intermedio Deportivo Spec-188,25.6,50.4,47.2,16.45,8
+REP-CAR-0189,Cofre de Acero Prensado Spec-189,29.3,52.7,49.1,17.9,9
+REP-ACC-0190,Cubrepolvo de Dirección de Caucho Spec-190,33,55,6,19.35,10
+REP-FRE-0191,Tambor de Freno Trasero Spec-191,36.7,57.3,7.9,20.8,1
+REP-MOT-0192,Junta de Culata Multilámina Spec-192,40.4,59.6,9.8,22.25,2
+REP-SUS-0193,Terminal de Dirección Externa Spec-193,44.1,61.9,11.7,23.7,3
+REP-ELE-0194,Bobina de Encendido Individual Spec-194,47.8,64.2,13.6,25.15,4
+REP-TRA-0195,Soporte de Caja de Velocidades Spec-195,51.5,66.5,15.5,26.6,5
+REP-QUI-0196, Spec-196,55.2,68.8,17.4,28.05,6
+REP-ENF-0197,Depósito de Expansión Anticongelante Spec-197,58.9,71.1,19.3,1,7
+REP-ESC-0198,Abrazadera de Tubo de Escape Spec-198,62.6,8.4,21.2,2.45,8
+REP-CAR-0199,Facia Delantera con Guías Spec-199,66.3,10.7,23.1,3.9,9
+REP-ACC-0200,Bocina de Aire Tipo Claxon Spec-200,70,13,25,5.35,10
+REP-FRE-0201,Cilindro Maestro de Frenos Spec-201,73.7,15.3,26.9,6.8,1
+REP-MOT-0202,Bomba de Aceite de Alta Presión Spec-202,77.4,17.6,28.8,8.25,2
+REP-SUS-0203,Bieleta de Barra Estabilizadora Spec-203,81.1,19.9,30.7,9.7,3
+REP-ELE-0204,Juego de Cables de Bujía 8mm Spec-204,84.8,22.2,32.6,11.15,4
+REP-TRA-0205,Soporte de Caja de Velocidades Spec-205,88.5,24.5,34.5,12.6,5
+REP-QUI-0206,Aceite de Motor Semi-Sintético 10W-40 Spec-206,92.2,26.8,36.4,14.05,6
+REP-ENF-0207,Manguera Superior de Radiador Spec-207,10.9,29.1,38.3,15.5,7
+REP-ESC-0208,Sensor de Temperatura de Gases EGT Spec-208,14.6,31.4,40.2,16.95,8
+REP-CAR-0209,Manija de Puerta Exterior Spec-209,18.3,33.7,42.1,18.4,9
+REP-ACC-0210,Compresor de Aire Portátil 12V Spec-210,22,36,44,19.85,10
+REP-FRE-0211,Manguera de Freno Blindada Spec-211,25.7,38.3,45.9,21.3,1
+REP-MOT-0212,Válvula de Admisión de Titanio Spec-212,29.4,40.6,47.8,22.75,2
+REP-SUS-0213,Brazo de Control Delantero Spec-213,33.1,42.9,49.7,24.2,3
+REP-ELE-0214,Bujía de Iridio Punta Fina Spec-214,36.8,45.2,6.6,25.65,4
+REP-TRA-0215,Retén de Flecha Salida Spec-215,40.5,47.5,8.5,27.1,5
+REP-QUI-0216,Líquido de Frenos Sintético DOT 4 Spec-216,44.2,49.8,10.4,28.55,6
+REP-ENF-0217,Sensor de Temperatura ECT Spec-217,47.9,52.1,12.3,1.5,7
+REP-ESC-0218,Junta de Brida de Escape Spec-218,51.6,54.4,14.2,2.95,8
+REP-CAR-0219,Amortiguador Telescópico de Cajuela Spec-219,55.3,56.7,16.1,4.4,9
+REP-ACC-0220,Cargador Rápido USB para Encendedor Spec-220,59,59,18,5.85,10
+REP-FRE-0221,Bomba de Vacío Booster Spec-221,62.7,61.3,19.9,7.3,1
+REP-MOT-0222,Cadena de Distribución Spec-222,66.4,63.6,21.8,8.75,2
+REP-SUS-0223,Buje de Horquilla Poliuretano Spec-223,70.1,65.9,23.7,10.2,3
+REP-ELE-0224,Sensor de Oxígeno Primario Spec-224,73.8,68.2,25.6,11.65,4
+REP-TRA-0225,Retén de Flecha Salida Spec-225,77.5,70.5,27.5,13.1,5
+REP-QUI-0226,Anticongelante Refrigerante 50/50 OAT Spec-226,81.2,72.8,29.4,14.55,6
+REP-ENF-0227,Tapón de Radiador 1.1 Bar Spec-227,84.9,10.1,31.3,16,7
+REP-ESC-0228,Tubo Flexible de Escape Reforzado Spec-228,88.6,12.4,33.2,17.45,8
+REP-CAR-0229,Moldura de Salpicadera Plástica Spec-229,92.3,14.7,35.1,18.9,9
+REP-ACC-0230,Filtro de Aire de Cabina con Carbón Activado Spec-230,11,17,37,20.35,10
+REP-FRE-0231,Sensor de Desgaste Balatas Spec-231,14.7,19.3,38.9,21.8,1
+REP-MOT-0232,Polea Tensora de Distribución Spec-232,18.4,21.6,40.8,23.25,2
+REP-SUS-0233,Cremallera de Dirección Hidráulica Spec-233,22.1,23.9,42.7,24.7,3
+REP-ELE-0234,Sensor de Posición Cigüeñal CKP Spec-234,25.8,26.2,44.6,26.15,4
+REP-TRA-0235, Spec-235,29.5,28.5,46.5,27.6,5
+REP-QUI-0236,Fluido de Transmisión Automática ATF Dexron VI Spec-236,33.2,30.8,48.4,0.55,6
+REP-ENF-0237, Spec-237,36.9,33.1,5.3,2,7
+REP-ESC-0238, Spec-238,40.6,35.4,7.2,3.45,8
+REP-CAR-0239, Spec-239,44.3,37.7,9.1,4.9,9
+REP-ACC-0240,Plumas Limpiaparabrisas de Silicona Spec-240,48,40,11,6.35,10
+REP-FRE-0241,Pastillas de Freno Cerámicas Spec-241,51.7,42.3,12.9,7.8,1
+REP-MOT-0242,Pistón Forjado con Anillos Spec-242,55.4,44.6,14.8,9.25,2
+REP-SUS-0243,Amortiguador de Gas Reforzado Spec-243,59.1,46.9,16.7,10.7,3
+REP-ELE-0244,Alternador 120 Amperios Spec-244,62.8,49.2,18.6,12.15,4
+REP-TRA-0245,Kit de Embrague Reforzado Spec-245,66.5,51.5,20.5,13.6,5
+REP-QUI-0246,Grasa para Baleros de Alta Temperatura Spec-246,70.2,53.8,22.4,15.05,6
+REP-ENF-0247,Termostato de Apertura 82C Spec-247,73.9,56.1,24.3,16.5,7
+REP-ESC-0248,Silenciador Trasero de Acero Inoxidable Spec-248,77.6,58.4,26.2,17.95,8
+REP-CAR-0249,Calavera Trasera Ahumada Spec-249,81.3,60.7,28.1,19.4,9
+REP-ACC-0250,Tapete de Uso Rudo Termoformado Spec-250,85,63,30,20.85,10

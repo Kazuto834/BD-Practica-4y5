@@ -1,0 +1,11 @@
+﻿ID_Categoria,Nombre,Nivel_Prioridad
+1,Sistemas de Frenos,1
+2,Motor y Distribución,1
+3,Suspensión y Dirección,2
+4,Sistema Eléctrico y Encendido,2
+5,Transmisión y Embrague,3
+6,Lubricantes y Químicos,1
+7,Sistema de Enfriamiento,2
+8,Escape y Control de Emisiones,3
+9,Carrocería y Cerrajería,4
+10,Accesorios e Iluminación,4
