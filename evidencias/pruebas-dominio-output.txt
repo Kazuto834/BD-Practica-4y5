@@ -1,0 +1,56 @@
+======================================================================
+SALIDA DE EJECUCIÓN: PRUEBAS DE RESTRICCIONES DE DOMINIO (10 CASOS)
+======================================================================
+
+--- CASO 1: NOT NULL en PRODUCTO.Nombre ---
+psql:pruebas.sql:10: ERROR:  el valor nulo en la columna «nombre» de la relación «producto» viola la restricción de no nulo
+DETAIL:  La fila que falla contiene (REP-FRE-9999, null, 15.00, 10.00, 5.00, 2.50, 1).
+SQLSTATE: 23502
+
+--- CASO 2: DEFAULT en EMPLEADO.Certificacion_Montacargas ---
+INSERT 0 1
+ id_empleado |       nombre        |  turno   | certificacion_montacargas 
+-------------+---------------------+----------+---------------------------
+         999 | Técnico de Pruebas  | Matutino | f
+(1 fila)
+
+--- CASO 3: UNIQUE Simple en CATEGORIA.Nombre ---
+psql:pruebas.sql:28: ERROR:  llave duplicada viola restricción de unicidad «uq_categoria_nombre»
+DETAIL:  Ya existe la llave (nombre)=(Sistemas de Frenos).
+SQLSTATE: 23505
+
+--- CASO 4: UNIQUE Compuesta en UBICACION(Zona, Pasillo, Rack, Nivel) ---
+psql:pruebas.sql:37: ERROR:  llave duplicada viola restricción de unicidad «uq_ubicacion_posicion_espacial»
+DETAIL:  Ya existe la llave (zona, pasillo, rack, nivel)=(ZONA-A, PAS-01, RCK-01, NIV-01).
+SQLSTATE: 23505
+
+--- CASO 5: CHECK de Rango en UBICACION.Capacidad_Peso_Kg > 0 ---
+psql:pruebas.sql:46: ERROR:  el nuevo renglón para la relación «ubicacion» viola la restricción «check» «chk_ubicacion_capacidad_positiva»
+DETAIL:  La fila que falla contiene (980, ZONA-B, PAS-05, RCK-05, NIV-02, -250.00, Paletizado).
+SQLSTATE: 23514
+
+--- CASO 6: CHECK de Rango NFPA en FLUIDO_QUIMICO (0 a 4) ---
+psql:pruebas.sql:55: ERROR:  el nuevo renglón para la relación «fluido_quimico» viola la restricción «check» «chk_fluido_inflamabilidad_rango»
+DETAIL:  La fila que falla contiene (REP-QUI-0001, 1000.00, 7, f).
+SQLSTATE: 23514
+
+--- CASO 7: CHECK de Formato Regex en PRODUCTO.SKU ---
+psql:pruebas.sql:64: ERROR:  el nuevo renglón para la relación «producto» viola la restricción «check» «chk_producto_sku_formato»
+DETAIL:  La fila que falla contiene (sku 123 *?, Filtro Experimental, 10.00, 10.00, 10.00, 1.00, 2).
+SQLSTATE: 23514
+
+--- CASO 8: CHECK de Fecha en INVENTARIO_FISICO <= CURRENT_DATE ---
+psql:pruebas.sql:73: ERROR:  el nuevo renglón para la relación «inventario_fisico» viola la restricción «check» «chk_inventario_fecha_valida»
+DETAIL:  La fila que falla contiene (REP-FRE-0001, 1, 9999, 50, 2099-12-31).
+SQLSTATE: 23514
+
+--- CASO 9: CHECK de Lista en EMPLEADO.Turno ---
+psql:pruebas.sql:82: ERROR:  el nuevo renglón para la relación «empleado» viola la restricción «check» «chk_empleado_turno»
+DETAIL:  La fila que falla contiene (888, Operador Extraordinario, Intermedio-Especial, f).
+SQLSTATE: 23514
+
+--- CASO 10: CHECK de Cantidad Positiva en DETALLE_ORDEN > 0 ---
+psql:pruebas.sql:91: ERROR:  el nuevo renglón para la relación «detalle_orden» viola la restricción «check» «chk_detalle_cantidad_positiva»
+DETAIL:  La fila que falla contiene (1, 99, REP-FRE-0001, 0).
+SQLSTATE: 23514
+======================================================================
