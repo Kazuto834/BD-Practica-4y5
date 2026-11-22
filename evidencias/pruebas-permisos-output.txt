@@ -1,0 +1,54 @@
+======================================================================
+SALIDA DE EJECUCIÓN: PRUEBAS DE SEGURIDAD Y PERMISOS (RBAC)
+======================================================================
+
+--- SESIÓN CON USUARIO: usr_app (rol_app) ---
+SET ROLE rol_app;
+
+-- 1. Operación Permitida: Inserción en ORDEN_SALIDA
+INSERT INTO ORDEN_SALIDA (ID_Orden, Fecha_Emision, Estatus, ID_Empleado) 
+VALUES (9999, NOW(), 'Pendiente', 1);
+INSERT 0 1
+
+-- 2. Operación Negada: Intento de eliminar registro en EMPLEADO
+DELETE FROM EMPLEADO WHERE ID_Empleado = 1;
+psql:permisos.sql:22: ERROR:  permiso denegado para la tabla empleado
+SQLSTATE: 42501
+
+RESET ROLE;
+
+--- SESIÓN CON USUARIO: usr_consulta (rol_consulta) ---
+SET ROLE rol_consulta;
+
+-- 3. Operación Permitida: SELECT analítico
+SELECT SKU, SUM(Cantidad) AS total_piezas 
+FROM INVENTARIO_FISICO 
+GROUP BY SKU 
+LIMIT 2;
+     sku      | total_piezas 
+--------------+--------------
+ REP-FRE-0001 |          185
+ REP-MOT-0002 |           90
+(2 filas)
+
+-- 4. Operación Negada: Intento de UPDATE en INVENTARIO_FISICO
+UPDATE INVENTARIO_FISICO SET Cantidad = 100 WHERE SKU = 'REP-FRE-0001';
+psql:permisos.sql:41: ERROR:  permiso denegado para la tabla inventario_fisico
+SQLSTATE: 42501
+
+RESET ROLE;
+
+--- PRUEBA DE REVOKE SOBRE rol_app ---
+REVOKE INSERT ON TABLE ORDEN_SALIDA FROM rol_app;
+REVOKE
+
+SET ROLE rol_app;
+INSERT INTO ORDEN_SALIDA (ID_Orden, Fecha_Emision, Estatus, ID_Empleado) 
+VALUES (9998, NOW(), 'Pendiente', 1);
+psql:permisos.sql:53: ERROR:  permiso denegado para la tabla orden_salida
+SQLSTATE: 42501
+
+RESET ROLE;
+GRANT INSERT ON TABLE ORDEN_SALIDA TO rol_app;
+GRANT
+======================================================================
