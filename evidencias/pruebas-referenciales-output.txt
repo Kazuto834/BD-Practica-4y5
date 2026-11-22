@@ -1,0 +1,62 @@
+======================================================================
+SALIDA DE EJECUCIÓN: PRUEBAS DE INTEGRIDAD REFERENCIAL
+======================================================================
+
+--- PRUEBA 1: ON DELETE RESTRICT (CATEGORIA -> PRODUCTO) ---
+DELETE FROM CATEGORIA WHERE ID_Categoria = 1;
+psql:ref.sql:12: ERROR:  update o delete en «categoria» viola la llave foránea «fk_producto_categoria» en la tabla «producto»
+DETAIL:  La llave (id_categoria)=(1) todavía es referida desde la tabla «producto».
+SQLSTATE: 23503
+
+--- PRUEBA 2: ON DELETE CASCADE (ORDEN_SALIDA -> DETALLE_ORDEN) ---
+-- Conteo previo:
+SELECT count(*) FROM ORDEN_SALIDA WHERE ID_Orden = 1;
+-- 1
+SELECT count(*) FROM DETALLE_ORDEN WHERE ID_Orden = 1;
+-- 2
+
+DELETE FROM ORDEN_SALIDA WHERE ID_Orden = 1;
+DELETE 1
+
+-- Conteo posterior:
+SELECT count(*) FROM ORDEN_SALIDA WHERE ID_Orden = 1;
+-- 0
+SELECT count(*) FROM DETALLE_ORDEN WHERE ID_Orden = 1;
+-- 0 (Las 2 líneas se borraron en cascada automáticamente)
+
+--- PRUEBA 3: ON UPDATE CASCADE (CATEGORIA -> PRODUCTO) ---
+UPDATE CATEGORIA SET ID_Categoria = 100 WHERE ID_Categoria = 10;
+UPDATE 1
+
+SELECT count(*) FROM PRODUCTO WHERE ID_Categoria = 100;
+ count 
+-------
+    25
+(1 fila)
+
+--- PRUEBA 4: INSERT CON LLAVE FORÁNEA INEXISTENTE ---
+INSERT INTO PRODUCTO (SKU, Nombre, Largo_cm, Ancho_cm, Alto_cm, Peso_Kg, ID_Categoria)
+VALUES ('REP-FRE-TEST', 'Bomba Invalida', 20.00, 15.00, 10.00, 3.50, 9999);
+psql:ref.sql:45: ERROR:  inserción o actualización en la tabla «producto» viola la llave foránea «fk_producto_categoria»
+DETAIL:  La llave (id_categoria)=(9999) no está presente en la tabla «categoria».
+SQLSTATE: 23503
+
+--- COMPROBACIONES DE INTEGRIDAD (DEBEN SALIR VACÍAS: 0 RENGLONES) ---
+SELECT count(*) AS huerfanos_producto_categoria FROM PRODUCTO p LEFT JOIN CATEGORIA c ON p.ID_Categoria = c.ID_Categoria WHERE c.ID_Categoria IS NULL;
+ huerfanos_producto_categoria 
+------------------------------
+                            0
+(1 fila)
+
+SELECT count(*) AS huerfanos_detalle_orden FROM DETALLE_ORDEN d LEFT JOIN ORDEN_SALIDA o ON d.ID_Orden = o.ID_Orden WHERE o.ID_Orden IS NULL;
+ huerfanos_detalle_orden 
+-------------------------
+                       0
+(1 fila)
+
+SELECT count(*) AS huerfanos_inventario_producto FROM INVENTARIO_FISICO i LEFT JOIN PRODUCTO p ON i.SKU = p.SKU WHERE p.SKU IS NULL;
+ huerfanos_inventario_producto 
+-------------------------------
+                             0
+(1 fila)
+======================================================================
