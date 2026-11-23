@@ -1,0 +1,54 @@
+======================================================================
+EJECUCIÓN DEL SCRIPT DE CARGA - PRIMERA CORRIDA (BASE LIMPIA)
+======================================================================
+Iniciando carga de datos en: postgres@localhost:5432
+Usuario de conexión (Rol de Aplicación): usr_app
+Hora de inicio: 2026-11-19 00:06:12
+======================================================================
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+COPY 10
+COPY 20
+COPY 60
+COPY 250
+COPY 225
+COPY 25
+COPY 220
+COPY 350
+COPY 300
+INSERT 0 10
+INSERT 0 20
+INSERT 0 60
+INSERT 0 250
+INSERT 0 225
+INSERT 0 25
+INSERT 0 220
+INSERT 0 350
+INSERT 0 300
+
+      Tabla Destino      | Registros Leídos | Insertados con Éxito | Omitidos / Existentes 
+-------------------------+------------------+----------------------+-----------------------
+ CATEGORIA               |               10 |                   10 |                     0
+ EMPLEADO                |               20 |                   20 |                     0
+ UBICACION               |               60 |                   60 |                     0
+ PRODUCTO                |              250 |                  250 |                     0
+ PIEZA_SOLIDA            |              225 |                  225 |                     0
+ FLUIDO_QUIMICO          |               25 |                   25 |                     0
+ ORDEN_SALIDA            |              220 |                  220 |                     0
+ DETALLE_ORDEN           |              350 |                  350 |                     0
+ INVENTARIO_FISICO       |              300 |                  300 |                     0
+(9 filas)
+
+COMMIT
+----------------------------------------------------------------------
+Carga masiva completada exitosamente.
+Tiempo total de ejecución de COPY masivo: 43 ms
+======================================================================

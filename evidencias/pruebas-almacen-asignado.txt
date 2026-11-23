@@ -1,0 +1,37 @@
+======================================================================
+SALIDA DE EJECUCIÓN: PRUEBAS EN EL DATA WAREHOUSE ASIGNADO
+======================================================================
+
+--- 1. POBLADO DE DIMENSIÓN TIEMPO ---
+SELECT warehouse.generar_dim_tiempo('2024-01-01'::DATE, '2026-12-31'::DATE);
+ generar_dim_tiempo 
+--------------------
+               1096
+(1 fila)
+
+--- 2. CONTEOS EN DIMENSIONES Y HECHOS ---
+ dimension        | registros 
+------------------+-----------
+ dim_tipo_evento  |        17
+ dim_tiempo       |      1096
+(2 filas)
+
+--- 3. APLICACIÓN DE 3 NUEVAS RESTRICCIONES DE DOMINIO ---
+ALTER TABLE public.obra ADD CONSTRAINT chk_obra_fechas_coherentes CHECK (fecha_final >= fecha_inicio);
+ALTER TABLE
+ALTER TABLE public.informes ADD CONSTRAINT chk_informes_avance_porcentaje CHECK (porcentaje_avance BETWEEN 0 AND 100);
+ALTER TABLE
+ALTER TABLE public.presupuesto_obra ADD CONSTRAINT chk_presupuesto_monto_positivo CHECK (presupuesto_total > 0.00);
+ALTER TABLE
+
+--- 4. PRUEBA DE INTERCEPCIÓN DE VIOLACIÓN CRONOLÓGICA ---
+psql:asig.sql:48: NOTICE:  ÉXITO: Se capturó correctamente la violación de fechas coherentes (SQLSTATE 23514).
+psql:asig.sql:62: NOTICE:  ÉXITO: Se capturó correctamente el avance físico excesivo (SQLSTATE 23514).
+
+--- 5. VERIFICACIÓN DE HECHOS HUÉRFANOS ---
+SELECT count(*) AS hechos_huerfanos_obra FROM warehouse.fact_eventos_auditoria f LEFT JOIN warehouse.dim_obra o ON f.obra_key = o.obra_key WHERE f.obra_key IS NOT NULL AND o.obra_key IS NULL;
+ hechos_huerfanos_obra 
+-----------------------
+                     0
+(1 fila)
+======================================================================

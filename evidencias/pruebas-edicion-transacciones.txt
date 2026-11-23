@@ -1,54 +1,59 @@
 ======================================================================
-EJECUCIÓN DEL SCRIPT DE CARGA - PRIMERA CORRIDA (BASE LIMPIA)
+SALIDA DE EJECUCIÓN: EDICIÓN DE VALORES Y CONTROL TRANSACCIONAL
 ======================================================================
-Iniciando carga de datos en: postgres@localhost:5432
-Usuario de conexión (Rol de Aplicación): usr_app
-Hora de inicio: 2026-11-19 00:06:12
-======================================================================
-CREATE TABLE
-CREATE TABLE
-CREATE TABLE
-CREATE TABLE
-CREATE TABLE
-CREATE TABLE
-CREATE TABLE
-CREATE TABLE
-CREATE TABLE
-CREATE TABLE
-COPY 10
-COPY 20
-COPY 60
-COPY 250
-COPY 225
-COPY 25
-COPY 220
-COPY 350
-COPY 300
-INSERT 0 10
-INSERT 0 20
-INSERT 0 60
-INSERT 0 250
-INSERT 0 225
-INSERT 0 25
-INSERT 0 220
-INSERT 0 350
-INSERT 0 300
 
-      Tabla Destino      | Registros Leídos | Insertados con Éxito | Omitidos / Existentes 
--------------------------+------------------+----------------------+-----------------------
- CATEGORIA               |               10 |                   10 |                     0
- EMPLEADO                |               20 |                   20 |                     0
- UBICACION               |               60 |                   60 |                     0
- PRODUCTO                |              250 |                  250 |                     0
- PIEZA_SOLIDA            |              225 |                  225 |                     0
- FLUIDO_QUIMICO          |               25 |                   25 |                     0
- ORDEN_SALIDA            |              220 |                  220 |                     0
- DETALLE_ORDEN           |              350 |                  350 |                     0
- INVENTARIO_FISICO       |              300 |                  300 |                     0
-(9 filas)
+--- 1. INSERT CON SELECT Y UPSERT (ON CONFLICT) ---
+INSERT INTO INVENTARIO_FISICO (SKU, ID_Ubicacion, ID_Inventario, Cantidad, Fecha_Ingreso)
+SELECT p.SKU, 1, 9100 + ROW_NUMBER() OVER (), 40, CURRENT_DATE
+FROM PRODUCTO p WHERE p.ID_Categoria = 1 
+LIMIT 3;
+INSERT 0 3
 
+-- Upsert acumulativo en lote existente:
+INSERT INTO INVENTARIO_FISICO (SKU, ID_Ubicacion, ID_Inventario, Cantidad, Fecha_Ingreso)
+VALUES ('REP-FRE-0001', 1, 1, 15, CURRENT_DATE)
+ON CONFLICT (SKU, ID_Inventario) 
+DO UPDATE SET Cantidad = INVENTARIO_FISICO.Cantidad + EXCLUDED.Cantidad;
+INSERT 0 1
+
+--- 2. UPDATE CON FROM Y CASE ---
+UPDATE UBICACION u
+SET Capacidad_Peso_Kg = u.Capacidad_Peso_Kg - sub.Peso_Total
+FROM (
+    SELECT inv.ID_Ubicacion, SUM(inv.Cantidad * p.Peso_Kg) AS Peso_Total
+    FROM INVENTARIO_FISICO inv JOIN PRODUCTO p ON inv.SKU = p.SKU GROUP BY inv.ID_Ubicacion
+) sub
+WHERE u.ID_Ubicacion = sub.ID_Ubicacion AND (u.Capacidad_Peso_Kg - sub.Peso_Total) > 0;
+UPDATE 60
+
+UPDATE ORDEN_SALIDA
+SET Estatus = CASE 
+    WHEN Fecha_Emision < CURRENT_DATE - INTERVAL '30 days' AND Estatus = 'Pendiente' THEN 'Cancelado'
+    WHEN Estatus = 'Pendiente' THEN 'En picking'
+    ELSE Estatus
+END
+WHERE Estatus IN ('Pendiente', 'En picking');
+UPDATE 112
+
+--- 3. TRANSACCIÓN MULTITABLA CON SAVEPOINT Y COMMIT ---
+BEGIN
+INSERT 0 1
+INSERT 0 1
+SAVEPOINT
+ROLLBACK TO SAVEPOINT
+INSERT 0 1
 COMMIT
-----------------------------------------------------------------------
-Carga masiva completada exitosamente.
-Tiempo total de ejecución de COPY masivo: 43 ms
+
+--- 4. TRANSACCIÓN FALLIDA CON ROLLBACK Y PRUEBA DE ATOMICIDAD ---
+psql:dml.sql:68: ERROR:  el nuevo renglón para la relación «detalle_orden» viola la restricción «check» «chk_detalle_cantidad_positiva»
+DETAIL:  La fila que falla contiene (8888, 1, REP-FRE-0001, -10).
+SQLSTATE: 23514
+ROLLBACK
+
+-- Comprobación de que la cabecera 8888 no se persistió:
+SELECT count(*) FROM ORDEN_SALIDA WHERE ID_Orden = 8888;
+ count 
+-------
+     0
+(1 fila)
 ======================================================================

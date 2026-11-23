@@ -1,0 +1,58 @@
+======================================================================
+EJECUCIÓN DEL SCRIPT DE CARGA - SEGUNDA CORRIDA (PRUEBA DE REPETIBILIDAD E IDEMPOTENCIA)
+======================================================================
+Iniciando carga de datos en: postgres@localhost:5432
+Usuario de conexión (Rol de Aplicación): usr_app
+Hora de inicio: 2026-11-19 00:07:05
+======================================================================
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+CREATE TABLE
+COPY 10
+COPY 20
+COPY 60
+COPY 250
+COPY 225
+COPY 25
+COPY 220
+COPY 350
+COPY 300
+INSERT 0 0
+INSERT 0 0
+INSERT 0 0
+INSERT 0 0
+INSERT 0 0
+INSERT 0 0
+INSERT 0 0
+INSERT 0 0
+INSERT 0 0
+
+      Tabla Destino      | Registros Leídos | Insertados con Éxito | Omitidos / Existentes 
+-------------------------+------------------+----------------------+-----------------------
+ CATEGORIA               |               10 |                    0 |                    10
+ EMPLEADO                |               20 |                    0 |                    20
+ UBICACION               |               60 |                    0 |                    60
+ PRODUCTO                |              250 |                    0 |                   250
+ PIEZA_SOLIDA            |              225 |                    0 |                   225
+ FLUIDO_QUIMICO          |               25 |                    0 |                    25
+ ORDEN_SALIDA            |              220 |                    0 |                   220
+ DETALLE_ORDEN           |              350 |                    0 |                   350
+ INVENTARIO_FISICO       |              300 |                    0 |                   300
+(9 filas)
+
+COMMIT
+----------------------------------------------------------------------
+Carga masiva completada exitosamente.
+Tiempo total de ejecución de COPY masivo: 39 ms
+======================================================================
+DIAGNÓSTICO TÉCNICO:
+1. La re-ejecución no produjo ningún error en PostgreSQL (Código de salida: 0).
+2. Se verificó la condición de Idempotencia: no se duplicaron renglones.
+3. El 100% de los registros previos fueron identificados y omitidos pacíficamente.
