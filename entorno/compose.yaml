@@ -29,6 +29,10 @@ services:
       ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@local.test}
       ADMIN_PASSWORD: ${ADMIN_PASSWORD:-local1234}
       AUTH_SECRET: ${AUTH_SECRET:-clave_local_por_defecto}
+    volumes:
+      - ../practica4/datos:/app/datos:ro
+      - ../practica4/migraciones:/app/migraciones_p4:ro
+      - ../practica5/migraciones:/app/migraciones_p5:ro
     depends_on:
       postgres:
         condition: service_healthy

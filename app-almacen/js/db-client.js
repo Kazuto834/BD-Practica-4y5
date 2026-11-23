@@ -1,3 +1,10 @@
+// ============================================================================
+// db-client.js
+// Capa de Abstracción de Datos (Dual-Mode: PostgreSQL API vs Sesión Estática)
+// Detecta automáticamente si el backend Docker está disponible; de lo contrario
+// opera sobre sessionStorage con window.MOCK_DB para despliegue en GitHub Pages.
+// ============================================================================
+
 class DBClient {
   constructor() {
     this.apiBase = "/api";
@@ -9,6 +16,10 @@ class DBClient {
     this.idEmpleado = null;
     this.userName = null;
   }
+
+  // ==========================================================================
+  // 1. Detección de Entorno y Verificación de Sesión
+  // ==========================================================================
 
   async init() {
     const isGitHubPages = window.location.hostname.endsWith("github.io");
@@ -127,6 +138,10 @@ class DBClient {
     return res;
   }
 
+  // ==========================================================================
+  // 2. Administración de Personal, Credenciales y Roles
+  // ==========================================================================
+
   async crearEmpleado(payload) {
     if (!this.isAdmin()) {
       throw new Error("Acceso denegado: se requiere cuenta de Administrador.");
@@ -147,6 +162,16 @@ class DBClient {
     if (!this.isAdmin()) {
       throw new Error("Acceso denegado: se requiere cuenta de Administrador.");
     }
+    if (!this.isPostgres) {
+      const db = this._getStaticDB();
+      const emp = db.catalogos.empleados.find((e) => Number(e.id_empleado) === Number(idEmpleado));
+      if (!emp) throw new Error("Empleado no encontrado.");
+      emp.correo_acceso = payload.email;
+      emp.rol = payload.rol || "empleado";
+      emp.rol_acceso = emp.rol;
+      this._saveStaticDB(db);
+      return { message: `Credenciales actualizadas en sesión estática para ${emp.nombre}.` };
+    }
     const res = await this._authFetch(`${this.apiBase}/empleados/${idEmpleado}/credenciales`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
@@ -155,6 +180,32 @@ class DBClient {
     const data = await res.json();
     if (!res.ok) {
       throw new Error(data.detail || "No se pudieron actualizar las credenciales.");
+    }
+    return data;
+  }
+
+  async asignarRolEmpleado(idEmpleado, rol) {
+    if (!this.isAdmin()) {
+      throw new Error("Acceso denegado: se requiere cuenta de Administrador.");
+    }
+    if (!this.isPostgres) {
+      const db = this._getStaticDB();
+      const emp = db.catalogos.empleados.find((e) => Number(e.id_empleado) === Number(idEmpleado));
+      if (!emp) throw new Error("Empleado no encontrado.");
+      emp.rol = rol;
+      emp.rol_acceso = rol;
+      this._saveStaticDB(db);
+      const etiqueta = rol === "admin" ? "Administrador" : "Personal Operativo";
+      return { message: `Rol actualizado a ${etiqueta} para ${emp.nombre}.` };
+    }
+    const res = await this._authFetch(`${this.apiBase}/empleados/${idEmpleado}/rol`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ rol }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.detail || "No se pudo actualizar el rol.");
     }
     return data;
   }
@@ -187,6 +238,10 @@ class DBClient {
     return data;
   }
 
+  // ==========================================================================
+  // 3. Almacenamiento Estático en Sesión e Indicador Visual de Entorno
+  // ==========================================================================
+
   _initStaticState() {
     if (!sessionStorage.getItem(this.storageKey)) {
       sessionStorage.setItem(this.storageKey, JSON.stringify(window.MOCK_DB));
@@ -208,8 +263,6 @@ class DBClient {
     if (this.isPostgres) {
       if (!this.isAuthenticated()) {
         badge.textContent = "🟢 PostgreSQL en Vivo (Bloqueado)";
-      } else if (this.userRole === "admin") {
-        badge.textContent = "🟢 PostgreSQL — Administrador";
       } else {
         badge.textContent = `🟢 PostgreSQL — ${this.userName}`;
       }
@@ -219,6 +272,10 @@ class DBClient {
       badge.className = "status-badge status-static";
     }
   }
+
+  // ==========================================================================
+  // 4. Catálogos, Productos e Inventario Físico
+  // ==========================================================================
 
   async getCatalogos() {
     if (!this.isPostgres) return this._getStaticDB().catalogos;
@@ -293,13 +350,31 @@ class DBClient {
       );
 
       if (tipo === "entrada") {
+        const prod = db.productos.find((p) => p.sku === payload.sku);
+        const ubi = db.catalogos.ubicaciones.find((u) => Number(u.id_ubicacion) === Number(payload.id_ubicacion));
+        if (!prod || !ubi) throw new Error("Producto o ubicación no válidos.");
+
+        const pesoActual = db.inventario
+          .filter((i) => Number(i.id_ubicacion) === Number(payload.id_ubicacion))
+          .reduce((acc, item) => {
+            const p = db.productos.find((x) => x.sku === item.sku);
+            return acc + (p ? Number(p.peso_kg) * Number(item.cantidad) : 0);
+          }, 0);
+
+        const pesoAdicional = Number(prod.peso_kg) * cantidad;
+        const capMax = Number(ubi.capacidad_peso_kg);
+
+        if (pesoActual + pesoAdicional > capMax) {
+          const disponible = Math.max(0, capMax - pesoActual);
+          throw new Error(
+            `Sin espacio: el peso a ingresar (${pesoAdicional.toFixed(2)} kg) excede la capacidad de la coordenada ${ubi.zona}-${ubi.pasillo}-${ubi.rack}-${ubi.nivel}. ` +
+            `Espacio disponible: ${disponible.toFixed(2)} kg (Capacidad máx: ${capMax.toFixed(2)} kg, Ocupado actual: ${pesoActual.toFixed(2)} kg).`
+          );
+        }
+
         if (idx !== -1) {
           db.inventario[idx].cantidad = Number(db.inventario[idx].cantidad) + cantidad;
         } else {
-          const prod = db.productos.find((p) => p.sku === payload.sku);
-          const ubi = db.catalogos.ubicaciones.find((u) => Number(u.id_ubicacion) === Number(payload.id_ubicacion));
-          if (!prod || !ubi) throw new Error("Producto o ubicación no válidos.");
-
           const nextId = db.inventario.reduce((max, i) => Math.max(max, Number(i.id_inventario)), 0) + 1;
           db.inventario.push({
             id_inventario: nextId,
@@ -344,6 +419,10 @@ class DBClient {
     return res.json();
   }
 
+  // ==========================================================================
+  // 5. Órdenes de Salida (Ciclo: Pendiente -> En Proceso -> Completada / Cancelada)
+  // ==========================================================================
+
   async getOrdenes() {
     if (!this.isPostgres) return this._getStaticDB().ordenes;
     const res = await this._authFetch(`${this.apiBase}/ordenes`);
@@ -362,14 +441,14 @@ class DBClient {
       db.ordenes.unshift({
         id_orden: Number(payload.id_orden),
         fecha_emision: new Date().toISOString(),
-        estatus: "En Proceso",
+        estatus: "Pendiente",
         id_empleado: emp.id_empleado,
         empleado: emp.nombre,
         turno: emp.turno,
         resumen_productos: `${payload.sku} (x${payload.cantidad_pedida})`,
       });
       this._saveStaticDB(db);
-      return { message: "Orden asignada en sesión estática." };
+      return { message: "Orden asignada en estatus Pendiente (sesión estática)." };
     }
 
     const res = await this._authFetch(`${this.apiBase}/ordenes`, {
@@ -381,22 +460,69 @@ class DBClient {
     return res.json();
   }
 
-  async completarOrden(idOrden) {
-    if (!this.isPostgres) {
-      const db = this._getStaticDB();
-      const orden = db.ordenes.find((o) => Number(o.id_orden) === Number(idOrden));
-      if (!orden) throw new Error("Orden no encontrada.");
-      orden.estatus = "Completada";
-      this._saveStaticDB(db);
-      return { message: "Orden completada en sesión estática." };
+  /**
+   * Replica en modo estático la misma máquina de estados validada por trigger en PostgreSQL.
+   */
+  _actualizarOrdenEstatica(idOrden, nuevoEstatus) {
+    const db = this._getStaticDB();
+    const orden = db.ordenes.find((o) => Number(o.id_orden) === Number(idOrden));
+    if (!orden) throw new Error("Orden no encontrada.");
+
+    const actual = String(orden.estatus || "").trim().toLowerCase();
+    if (nuevoEstatus === "En Proceso" && actual !== "pendiente") {
+      throw new Error("Solo las órdenes en estatus Pendiente pueden pasar a En Proceso.");
+    }
+    if (nuevoEstatus === "Completada" && actual !== "en proceso" && actual !== "en despacho") {
+      throw new Error("Debes poner primero la orden En Proceso antes de marcarla como Completada.");
+    }
+    if (nuevoEstatus === "Cancelada" && (actual === "completada" || actual === "cancelada")) {
+      throw new Error(`La orden #${idOrden} ya está ${orden.estatus} y no puede cancelarse.`);
     }
 
+    orden.estatus = nuevoEstatus;
+    this._saveStaticDB(db);
+    return { message: `Orden #${idOrden} actualizada a '${nuevoEstatus}' en sesión estática.` };
+  }
+
+  async procesarOrden(idOrden) {
+    if (!this.isPostgres) {
+      return this._actualizarOrdenEstatica(idOrden, "En Proceso");
+    }
+    const res = await this._authFetch(`${this.apiBase}/ordenes/${idOrden}/procesar`, {
+      method: "PATCH",
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "No se pudo poner la orden en proceso.");
+    return data;
+  }
+
+  async completarOrden(idOrden) {
+    if (!this.isPostgres) {
+      return this._actualizarOrdenEstatica(idOrden, "Completada");
+    }
     const res = await this._authFetch(`${this.apiBase}/ordenes/${idOrden}/completar`, {
       method: "PATCH",
     });
-    if (!res.ok) throw new Error("Error al completar orden");
-    return res.json();
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "No se pudo completar la orden.");
+    return data;
   }
+
+  async cancelarOrden(idOrden) {
+    if (!this.isPostgres) {
+      return this._actualizarOrdenEstatica(idOrden, "Cancelada");
+    }
+    const res = await this._authFetch(`${this.apiBase}/ordenes/${idOrden}/cancelar`, {
+      method: "PATCH",
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || "No se pudo cancelar la orden.");
+    return data;
+  }
+
+  // ==========================================================================
+  // 6. Reportes Gerenciales
+  // ==========================================================================
 
   async getReportes() {
     if (!this.isPostgres) {

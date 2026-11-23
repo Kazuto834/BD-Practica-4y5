@@ -166,12 +166,40 @@ for ($o = 1; $o -le 220; $o++) {
 $detHeader = "ID_Orden,Numero_Linea,SKU,Cantidad_Pedida"
 ($detHeader, $detalles) | Out-File -FilePath "$datosPath\detalle_ordenes.csv" -Encoding utf8
 
-# 7. INVENTARIO FISICO (300 lotes en almacén)
+# 7. INVENTARIO FISICO (300 lotes en almacén, respetando capacidad estructural de carga)
+# Se calcula la cantidad de unidades por lote para que el peso acumulado en cada ubicación
+# permanezca entre el 35% y el 65% de la capacidad máxima de la celda / rack.
+$prodPesos = @{}
+foreach ($pStr in $productos) {
+    $pParts = $pStr -split ","
+    $prodPesos[$pParts[0]] = [double]$pParts[5]
+}
+
+$ubiCapacidades = @{}
+foreach ($uStr in $ubicaciones) {
+    $uParts = $uStr -split ","
+    $ubiCapacidades[[int]$uParts[0]] = [double]$uParts[5]
+}
+
+$ubiPesosAcumulados = @{}
+for ($u = 1; $u -le 60; $u++) { $ubiPesosAcumulados[$u] = 0.0 }
+
 $inventarios = @()
 for ($invId = 1; $invId -le 300; $invId++) {
     $skuSelected = $skuList[$invId % $skuList.Count]
     $ubiId = ($invId % 60) + 1
-    $cantidad = (($invId * 17) % 120) + 5
+    $pesoSku = $prodPesos[$skuSelected]
+    $capMax = $ubiCapacidades[$ubiId]
+    $targetFactor = 0.35 + (($ubiId * 7) % 30) / 100.0
+    $targetPesoUbicacion = $capMax * $targetFactor
+    $slotPeso = $targetPesoUbicacion / 5.0
+    
+    $cantidad = [math]::Max(1, [int]($slotPeso / $pesoSku))
+    while ($cantidad -gt 1 -and (($ubiPesosAcumulados[$ubiId] + ($cantidad * $pesoSku)) -gt ($capMax * 0.70))) {
+        $cantidad--
+    }
+    $ubiPesosAcumulados[$ubiId] += ($cantidad * $pesoSku)
+    
     $diaIng = [int](($invId % 27) + 1)
     $mesIng = [int](([math]::Floor($invId / 30) % 10) + 1)
     $fechaIng = "2026-{0:D2}-{1:D2}" -f $mesIng, $diaIng

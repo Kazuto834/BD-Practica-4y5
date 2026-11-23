@@ -103,3 +103,56 @@ CREATE TABLE INVENTARIO_FISICO (
         ON DELETE RESTRICT
         ON UPDATE CASCADE
 );
+
+-- Restricción Activa: Validación de Capacidad de Peso en Racks y Celdas Físicas
+CREATE OR REPLACE FUNCTION fn_validar_capacidad_ubicacion()
+RETURNS TRIGGER AS $func$
+DECLARE
+    v_capacidad NUMERIC(10, 2);
+    v_peso_unitario NUMERIC(8, 2);
+    v_peso_actual NUMERIC(10, 2);
+    v_peso_nuevo NUMERIC(10, 2);
+    v_peso_total NUMERIC(10, 2);
+    v_ubicacion_desc TEXT;
+BEGIN
+    SELECT u.capacidad_peso_kg, u.zona || '-' || u.pasillo || '-' || u.rack || '-' || u.nivel
+    INTO v_capacidad, v_ubicacion_desc
+    FROM UBICACION u
+    WHERE u.id_ubicacion = NEW.id_ubicacion;
+
+    IF v_capacidad IS NULL THEN
+        RAISE EXCEPTION 'La ubicación % no existe.', NEW.id_ubicacion;
+    END IF;
+
+    SELECT peso_kg INTO v_peso_unitario
+    FROM PRODUCTO
+    WHERE sku = NEW.sku;
+
+    IF v_peso_unitario IS NULL THEN
+        RAISE EXCEPTION 'El producto con SKU % no existe.', NEW.sku;
+    END IF;
+
+    SELECT COALESCE(SUM(p.peso_kg * i.cantidad), 0)
+    INTO v_peso_actual
+    FROM INVENTARIO_FISICO i
+    JOIN PRODUCTO p ON i.sku = p.sku
+    WHERE i.id_ubicacion = NEW.id_ubicacion
+      AND NOT (i.sku = NEW.sku AND i.id_inventario = NEW.id_inventario);
+
+    v_peso_nuevo := v_peso_unitario * NEW.cantidad;
+    v_peso_total := v_peso_actual + v_peso_nuevo;
+
+    IF v_peso_total > v_capacidad THEN
+        RAISE EXCEPTION 'Sin espacio en la ubicación %: el peso total (% kg) excede la capacidad máxima del rack (% kg). Capacidad disponible: % kg.',
+            v_ubicacion_desc, ROUND(v_peso_total, 2), ROUND(v_capacidad, 2), ROUND(GREATEST(0.00, v_capacidad - v_peso_actual), 2);
+    END IF;
+
+    RETURN NEW;
+END;
+$func$ LANGUAGE plpgsql;
+
+DROP TRIGGER IF EXISTS trg_validar_capacidad_ubicacion ON INVENTARIO_FISICO;
+CREATE TRIGGER trg_validar_capacidad_ubicacion
+BEFORE INSERT OR UPDATE ON INVENTARIO_FISICO
+FOR EACH ROW
+EXECUTE FUNCTION fn_validar_capacidad_ubicacion();
