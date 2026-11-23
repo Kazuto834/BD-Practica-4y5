@@ -13,9 +13,9 @@ window.MOCK_DB = {
       { id_ubicacion: 4, zona: "Z-C", pasillo: "P3", rack: "R02", nivel: "N1", capacidad_peso_kg: 300, tipo_almacenaje: "Seco" }
     ],
     empleados: [
-      { id_empleado: 101, nombre: "Carlos Mendoza", turno: "Matutino", certificacion_montacargas: true },
-      { id_empleado: 102, nombre: "Laura Gómez", turno: "Vespertino", certificacion_montacargas: false },
-      { id_empleado: 103, nombre: "Roberto Sánchez", turno: "Matutino", certificacion_montacargas: true }
+      { id_empleado: 101, nombre: "Carlos Mendoza", turno: "Matutino", certificacion_montacargas: true, correo_acceso: "carlos@elpiston.mx", rol: "admin", rol_acceso: "admin" },
+      { id_empleado: 102, nombre: "Laura Gómez", turno: "Vespertino", certificacion_montacargas: false, correo_acceso: "laura@elpiston.mx", rol: "empleado", rol_acceso: "empleado" },
+      { id_empleado: 103, nombre: "Roberto Sánchez", turno: "Matutino", certificacion_montacargas: true, correo_acceso: null, rol: "empleado", rol_acceso: "empleado" }
     ]
   },
   productos: [

@@ -1,3 +1,12 @@
+/* ============================================================================
+   styles.css
+   Hoja de Estilos Industrial — Almacenes El Pistón
+   ============================================================================ */
+
+/* ============================================================================
+   1. Variables de Tema y Reseteo Global
+   ============================================================================ */
+
 :root {
   --bg: #e7e5e4;
   --surface: #fafaf9;
@@ -15,6 +24,10 @@
   --ok-text: #14532d;
   --warn-bg: #fef3c7;
   --warn-text: #78350f;
+  --info-bg: #dbeafe;
+  --info-text: #1e3a8a;
+  --danger-bg: #fee2e2;
+  --danger-text: #991b1b;
 }
 
 * {
@@ -29,6 +42,10 @@ body {
   color: var(--text);
   line-height: 1.5;
 }
+
+/* ============================================================================
+   2. Barra Superior, Indicadores de Entorno y Pestañas Principales
+   ============================================================================ */
 
 .topbar {
   background: var(--steel-dark);
@@ -107,6 +124,10 @@ body {
   border-bottom-color: var(--safety-yellow);
   background: rgba(245, 158, 11, 0.08);
 }
+
+/* ============================================================================
+   3. Contenedores, Tarjetas y Formularios
+   ============================================================================ */
 
 .container {
   max-width: 1220px;
@@ -204,6 +225,10 @@ input:disabled {
   cursor: not-allowed;
 }
 
+/* ============================================================================
+   4. Botones y Controles de Acción en Órdenes de Salida
+   ============================================================================ */
+
 .btn-primary {
   background: var(--primary);
   color: #ffffff;
@@ -224,17 +249,77 @@ input:disabled {
   background: var(--steel-mid);
   color: #fbbf24;
   border: 1px solid var(--steel-light);
-  padding: 0.35rem 0.7rem;
+  padding: 0.38rem 0.75rem;
   border-radius: 4px;
   font-size: 0.8rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.15s ease, color 0.15s ease;
 }
 
-.btn-small:hover {
+.btn-small:hover:not(:disabled) {
   background: var(--steel-dark);
   color: #ffffff;
 }
+
+.btn-small:disabled,
+.btn-disabled-role {
+  background: #e7e5e4 !important;
+  color: #78716c !important;
+  border-color: #d6d3d1 !important;
+  cursor: not-allowed !important;
+  opacity: 0.85;
+}
+
+.order-actions-wrap {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.btn-dispatch {
+  background: #1d4ed8;
+  color: #ffffff;
+  border-color: #1e40af;
+}
+
+.btn-dispatch:hover:not(:disabled) {
+  background: #1e40af;
+}
+
+.btn-complete {
+  background: #15803d;
+  color: #ffffff;
+  border-color: #166534;
+}
+
+.btn-complete:hover:not(:disabled) {
+  background: #166534;
+}
+
+.btn-cancel {
+  background: #b91c1c;
+  color: #ffffff;
+  border-color: #991b1b;
+}
+
+.btn-cancel:hover:not(:disabled) {
+  background: #991b1b;
+}
+
+.role-lock-note {
+  display: block;
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-weight: 600;
+  margin-top: 0.15rem;
+  line-height: 1.25;
+}
+
+/* ============================================================================
+   5. Tablas, Etiquetas de Coordenadas y Badges de Estatus
+   ============================================================================ */
 
 .table-wrap {
   overflow-x: auto;
@@ -270,6 +355,19 @@ tbody tr:hover {
   background: #fef3c7;
 }
 
+tbody tr.row-despacho {
+  background: #eff6ff;
+}
+
+tbody tr.row-despacho:hover {
+  background: #dbeafe;
+}
+
+tbody tr.row-cancelada {
+  opacity: 0.72;
+  background: #fef2f2;
+}
+
 .coord-tag {
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   background: #27272a;
@@ -282,11 +380,90 @@ tbody tr:hover {
 .badge-warn {
   background: var(--warn-bg);
   color: var(--warn-text);
-  padding: 0.15rem 0.45rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 3px;
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 700;
+  display: inline-block;
 }
+
+.badge-info {
+  background: var(--info-bg);
+  color: var(--info-text);
+  border: 1px solid #93c5fd;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.badge-ok,
+.badge-success {
+  background: var(--ok-bg);
+  color: var(--ok-text);
+  border: 1px solid #86efac;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.badge-neutral {
+  background: var(--bg-surface, #f1f5f9);
+  color: var(--text, #334155);
+  border: 1px solid var(--border, #cbd5e1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+.btn-secondary {
+  background: #f1f5f9;
+  color: #334155;
+  border: 1px solid #cbd5e1;
+}
+
+.btn-secondary:hover {
+  background: #e2e8f0;
+  color: #0f172a;
+}
+
+.badge-danger {
+  background: var(--danger-bg);
+  color: var(--danger-text);
+  border: 1px solid #fca5a5;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  display: inline-block;
+}
+
+tbody tr.row-mia {
+  background: #fffbeb;
+  border-left: 4px solid var(--safety-yellow);
+}
+
+.badge-mia {
+  background: var(--steel-dark);
+  color: #fbbf24;
+  border: 1px solid var(--safety-yellow);
+  padding: 0.12rem 0.42rem;
+  border-radius: 3px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  margin-left: 0.35rem;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* ============================================================================
+   6. Cuadrículas, Alertas y Controles de Contraseña
+   ============================================================================ */
 
 .grid-2 {
   display: grid;
@@ -340,4 +517,281 @@ tbody tr:hover {
 .btn-toggle-pass:hover {
   background: var(--steel-dark);
   color: #ffffff;
+}
+
+/* ============================================================================
+   7. Sub-pestañas de Reportes Gerenciales
+   ============================================================================ */
+
+.report-subtabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+  margin-bottom: 1.15rem;
+  padding: 0.65rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--safety-yellow);
+  border-radius: 6px;
+}
+
+.report-subtab-btn {
+  background: var(--surface-alt);
+  color: var(--steel-dark);
+  border: 1px solid var(--border);
+  padding: 0.55rem 1rem;
+  border-radius: 4px;
+  font-size: 0.86rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.report-subtab-btn:hover {
+  border-color: var(--primary);
+  background: var(--warn-bg);
+}
+
+.report-subtab-btn.active {
+  background: var(--steel-dark);
+  color: #fbbf24;
+  border-color: var(--steel-dark);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+}
+
+/* ============================================================================
+   8. Filtros Múltiples, Combobox Buscables y Buscador de Catálogo
+   ============================================================================ */
+
+.filter-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  margin-bottom: 0.9rem;
+}
+
+.ms-dropdown {
+  position: relative;
+  min-width: 210px;
+  flex: 1 1 210px;
+  max-width: 300px;
+}
+
+.ss-combobox {
+  position: relative;
+  width: 100%;
+  flex: none;
+}
+
+.ms-trigger {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
+  background: #ffffff;
+  color: var(--text);
+  border: 1px solid #a8a29e;
+  border-radius: 4px;
+  font-size: 0.86rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.ms-trigger:hover {
+  border-color: var(--primary);
+}
+
+.ms-trigger.ms-active {
+  border-color: var(--primary);
+  background: var(--warn-bg);
+  color: var(--warn-text);
+  box-shadow: 0 0 0 2px rgba(217, 119, 6, 0.18);
+}
+
+.ms-trigger-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ms-menu,
+.ss-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  min-width: 250px;
+  z-index: 80;
+  background: #ffffff;
+  color: var(--text);
+  border: 1px solid #a8a29e;
+  border-top: 3px solid var(--safety-yellow);
+  border-radius: 6px;
+  box-shadow: 0 10px 24px rgba(28, 25, 23, 0.18);
+  padding: 0.5rem;
+}
+
+.ms-search-input {
+  width: 100%;
+  padding: 0.45rem 0.6rem;
+  margin-bottom: 0.45rem;
+  background: var(--surface-alt);
+  color: var(--text);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-size: 0.84rem;
+}
+
+.ms-search-input:focus {
+  outline: none;
+  border-color: var(--primary);
+  background: #ffffff;
+}
+
+.ms-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.4rem;
+  padding-bottom: 0.4rem;
+  margin-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.ms-action-btn {
+  background: transparent;
+  border: none;
+  color: var(--primary-hover);
+  font-size: 0.78rem;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 0.2rem 0.4rem;
+  border-radius: 4px;
+}
+
+.ms-action-btn:hover {
+  background: var(--warn-bg);
+}
+
+.ms-options-list,
+.ss-options-list {
+  max-height: 215px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ms-option {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.55rem;
+  padding: 0.42rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  user-select: none;
+  text-align: left;
+}
+
+.ms-option:hover {
+  background: var(--warn-bg);
+}
+
+.ms-option input[type="checkbox"] {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  margin: 0;
+  accent-color: var(--primary);
+  cursor: pointer;
+}
+
+.ms-option span {
+  line-height: 1.25;
+  word-break: break-word;
+}
+
+.ms-empty-msg {
+  padding: 0.6rem;
+  font-size: 0.83rem;
+  color: var(--muted);
+  text-align: center;
+}
+
+.ss-input-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.ss-input {
+  width: 100%;
+  padding-right: 2rem;
+}
+
+.ss-input.ss-unconfirmed {
+  border-color: var(--primary);
+  background: var(--warn-bg);
+}
+
+.ss-caret {
+  position: absolute;
+  right: 0.65rem;
+  pointer-events: none;
+  color: var(--steel-mid);
+  font-size: 0.82rem;
+}
+
+.ss-item {
+  padding: 0.45rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  line-height: 1.3;
+}
+
+.ss-item:hover {
+  background: var(--warn-bg);
+}
+
+.ss-item.ss-selected {
+  background: var(--steel-mid);
+  color: #fbbf24;
+  font-weight: 600;
+}
+
+.catalog-search-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: center;
+  margin-bottom: 0.9rem;
+}
+
+.catalog-search-box input[type="search"] {
+  flex: 2 1 280px;
+  min-width: 240px;
+}
+
+.catalog-count-badge {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--steel-mid);
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface-alt);
 }
